@@ -1,0 +1,60 @@
+/*
+ * Copyright 2016 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
+
+    defaultConfig {
+        applicationId "com.example.androidthings.fancontrol"
+        minSdkVersion 26
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        debug {
+            buildConfigField "String", "PROJECT_ID", '"YOUR GOOGLE CLOUD PROJECT ID"'
+            buildConfigField "String", "PUBSUB_TOPIC", '"YOUR GOOGLE CLOUD PUBSUB TOPIC"'
+        }
+        release {
+            initWith(buildTypes.debug)
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.12'
+
+    compileOnly 'com.google.android.things:androidthings:0.7-devpreview'
+
+    implementation 'com.google.android.things.contrib:driver-button:0.6'
+    implementation 'com.google.android.things.contrib:driver-ht16k33:0.5'
+    implementation 'com.google.android.things.contrib:driver-apa102:0.6'
+
+    implementation('com.google.api-client:google-api-client-android:1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    implementation('com.google.apis:google-api-services-pubsub:v1-rev12-1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+
+}
