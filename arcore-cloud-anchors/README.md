@@ -1,7 +1,12 @@
-# Google AR Cloud Anchor Codelab
-
+ARCore Cloud Anchors Codelab
+=============================
 Copyright (c) 2018 Google Inc.  All rights reserved.
 
-Sample code and solutions for the Google AR Cloud Anchors codelab.
-The solution to each part is in a separate directory as its own Android Studio
-project that can be built using Gradle.
+These are sample Android Studio projects indended for use with the Google AR Codelabs.
+
+Please note, we do not accept pull requests.
+
+## Documentation
+
+* [Quickstart for Android Java](//developers.google.com/ar/develop/java/quickstart)
+* [ARCore SDK for Java API Reference](//developers.google.com/ar/reference/java)
