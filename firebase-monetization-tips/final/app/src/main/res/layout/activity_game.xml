@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="24dp">
+
+        <TextView
+            android:id="@+id/tvActivityGameRound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="#222222"
+            tools:text="Round 1/6" />
+
+        <TextView
+            android:id="@+id/tvActivityGameHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:typeface="monospace"
+            android:minHeight="?attr/actionBarSize"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="#222222"
+            tools:text="A_____ M________" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="4dp">
+
+        <com.google.firebase.codelab.awesomedrawingquiz.view.QuickDrawView
+            android:id="@+id/qvActivityGame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <Button style="@style/Widget.AppCompat.Button.Borderless"
+            android:id="@+id/btnActivityGameHint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:text="@string/hint" />
+
+        <Button
+            android:id="@+id/btnActivityGameAnswer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/answer"/>
+
+        <Button style="@style/Widget.AppCompat.Button.Borderless"
+            android:id="@+id/btnActivityGameSkip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/skip"/>
+
+    </LinearLayout>
+
+    <include layout="@layout/content_full_screen_dialog" />
+
+</android.support.design.widget.CoordinatorLayout>

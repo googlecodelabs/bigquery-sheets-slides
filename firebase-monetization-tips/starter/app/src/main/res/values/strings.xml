@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Awesome Drawing Quiz!</string>
+
+    <string name="answer">Answer</string>
+    <string name="back_to_main_menu">Back to main menu</string>
+    <string name="correct">Correct!</string>
+    <string name="correct_answers">Correct answers: %d</string>
+    <string name="enter_your_answer">Enter your answer</string>
+    <string name="get_started">Get started</string>
+    <string name="good_job">Good Job!</string>
+    <string name="guess_the_name">Guess the name!</string>
+    <string name="hint">Hint</string>
+    <string name="level_indicator">Level %d/%d</string>
+    <string name="need_a_hint">Need a hint?</string>
+    <string name="need_a_hint_description">Watch an ad to get a hint!</string>
+    <string name="next_level">Next level</string>
+    <string name="skip">Skip</string>
+    <string name="stage_finished">Stage finished!</string>
+    <string name="start_a_game">Start a game</string>
+    <string name="try_again">Try again</string>
+    <string name="wrong_answer">Wrong Answer!</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>difficulty</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>reward_amount</key>
+        <value>1</value>
+    </entry>
+</defaultsMap>

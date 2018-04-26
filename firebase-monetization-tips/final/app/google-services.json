@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "56819158164",
+    "firebase_url": "https://awesome-drawing-quiz.firebaseio.com",
+    "project_id": "awesome-drawing-quiz",
+    "storage_bucket": "awesome-drawing-quiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:56819158164:android:f170c63f52b9bcc3",
+        "android_client_info": {
+          "package_name": "com.google.firebase.codelab.awesomedrawingquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "56819158164-v84vdk865abtb29umcbhhe3fp0moeaq1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvYNSAsc3TfJyT2pSVpFnx5bmIHyRk8Ms"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
