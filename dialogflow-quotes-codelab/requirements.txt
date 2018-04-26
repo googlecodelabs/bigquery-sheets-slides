@@ -1,0 +1,2 @@
+Flask==0.12.2
+Flask-Restful==0.3.2
