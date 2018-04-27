@@ -102,17 +102,29 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
   @GuardedBy("anchorLock")
   private Anchor anchor;
 
+  private enum AppAnchorState {
+    NONE,
+    HOSTING,
+    HOSTED
+  }
+
+  @GuardedBy("anchorLock")
+  private AppAnchorState appAnchorState = AppAnchorState.NONE;
+
+  /** Handles a single tap during a {@link #onDrawFrame(GL10)} call. */
   private void handleTapOnDraw(TrackingState currentTrackingState, Frame currentFrame) {
     synchronized (singleTapLock) {
       synchronized (anchorLock) {
         if (anchor == null
             && queuedSingleTap != null
-            && currentTrackingState == TrackingState.TRACKING) {
+            && currentTrackingState == TrackingState.TRACKING
+            && appAnchorState == AppAnchorState.NONE) {
           for (HitResult hit : currentFrame.hitTest(queuedSingleTap)) {
             if (shouldCreateAnchorWithHit(hit)) {
               Anchor anchor = session.hostCloudAnchor(hit.createAnchor());
-              snackbarHelper.showMessage(this, "Now hosting anchor...");
               setNewAnchor(anchor);
+              appAnchorState = AppAnchorState.HOSTING;
+              snackbarHelper.showMessage(this, "Now hosting anchor...");
               break;
             }
           }
@@ -140,21 +152,22 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
     return false;
   }
 
+  /** Checks the set of updated anchors. */
   private void checkUpdatedAnchors(Collection<Anchor> updatedAnchors) {
     synchronized (anchorLock) {
-      if (anchor == null) {
+      if (appAnchorState != AppAnchorState.HOSTING) {
+        // Do nothing if the app is not waiting for a hosting action to complete.
         return;
       }
       if (updatedAnchors.contains(anchor)) {
         CloudAnchorState cloudState = anchor.getCloudAnchorState();
         if (cloudState.isError()) {
           snackbarHelper.showMessageWithDismiss(this, "Error hosting anchor: " + cloudState);
-
-          // Setting the anchor to be null in the case of a failure
-          setNewAnchor(null);
+          appAnchorState = AppAnchorState.NONE;
         } else if (cloudState == CloudAnchorState.SUCCESS) {
           snackbarHelper.showMessageWithDismiss(
               this, "Anchor hosted successfully! Cloud ID: " + anchor.getCloudAnchorId());
+          appAnchorState = AppAnchorState.HOSTED;
         }
       }
     }
@@ -407,12 +420,14 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
     }
   }
 
+  /** Sets the new anchor in the scene. */
   private void setNewAnchor(@Nullable Anchor newAnchor) {
     synchronized (anchorLock) {
       if (anchor != null) {
         anchor.detach();
       }
       anchor = newAnchor;
+      appAnchorState = AppAnchorState.NONE;
     }
   }
 }

@@ -379,6 +379,7 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
     }
   }
 
+  /** Sets the new anchor in the scene. */
   private void setNewAnchor(@Nullable Anchor newAnchor) {
     synchronized (anchorLock) {
       if (anchor != null) {
