@@ -485,6 +485,7 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         anchor.detach();
       }
       anchor = newAnchor;
+      appAnchorState = AppAnchorState.NONE;
     }
   }
 }
