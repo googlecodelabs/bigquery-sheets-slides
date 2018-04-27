@@ -1,0 +1,308 @@
+{
+  version: {
+    major: 0.51,
+    minor: 1
+  },
+  model: {
+    sources: [
+      {
+        name: "House",
+        file: "sampledata/models/House.obj",
+        recenter: true,
+        scale: 1.0,
+        axis_system: "Unspecified",
+        smoothing_angle: 45.0,
+        max_bone_weights: 4,
+        report_errors_to_stdout: true,
+        flip_texture_coordinates: false
+      }
+    ],
+    renderables: [
+      {
+        source: "House",
+        attributes: [
+          "Position",
+          "TexCoord",
+          "Orientation"
+        ]
+      }
+    ],
+    collidable: {
+      source: "House"
+    },
+    skeleton: {
+      source: "House"
+    }
+  },
+  materials: [
+    {
+      name: "FBX Material",
+      source: "build/sceneform_sdk/default_materials/obj_material.rcm",
+      parameters: [
+        {
+          name: "Base Color",
+          id: "baseColor",
+          initial_value: {
+            init_type: "NullInit",
+            init: {
+            }
+          }
+        },
+        {
+          name: "Base Color Tint",
+          id: "baseColorTint",
+          initial_value: {
+            init_type: "Vec4Init",
+            init: {
+              x: 0.47,
+              y: 0.33,
+              z: 0.28,
+              w: 1.0
+            }
+          }
+        },
+        {
+          name: "Metalicity",
+          id: "metallic",
+          initial_value: {
+            init_type: "ScalarInit",
+            init: {
+              value: 1.0
+            }
+          }
+        },
+        {
+          name: "Roughness",
+          id: "roughness",
+          initial_value: {
+            init_type: "ScalarInit",
+            init: {
+              value: 0.1428
+            }
+          }
+        },
+        {
+          name: "Conditionally enabled transparency",
+          id: "opacity",
+          initial_value: {
+            init_type: "NullInit",
+            init: {
+            }
+          }
+        }
+      ],
+      parameter_meta_option_indices: [
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      name: "FBX Material",
+      source: "build/sceneform_sdk/default_materials/obj_material.rcm",
+      parameters: [
+        {
+          name: "Base Color",
+          id: "baseColor",
+          initial_value: {
+            init_type: "NullInit",
+            init: {
+            }
+          }
+        },
+        {
+          name: "Base Color Tint",
+          id: "baseColorTint",
+          initial_value: {
+            init_type: "Vec4Init",
+            init: {
+              x: 0.01,
+              y: 0.61,
+              z: 0.9,
+              w: 1.0
+            }
+          }
+        },
+        {
+          name: "Metalicity",
+          id: "metallic",
+          initial_value: {
+            init_type: "ScalarInit",
+            init: {
+              value: 1.0
+            }
+          }
+        },
+        {
+          name: "Roughness",
+          id: "roughness",
+          initial_value: {
+            init_type: "ScalarInit",
+            init: {
+              value: 0.1428
+            }
+          }
+        },
+        {
+          name: "Conditionally enabled transparency",
+          id: "opacity",
+          initial_value: {
+            init_type: "NullInit",
+            init: {
+            }
+          }
+        }
+      ],
+      parameter_meta_option_indices: [
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      name: "FBX Material",
+      source: "build/sceneform_sdk/default_materials/obj_material.rcm",
+      parameters: [
+        {
+          name: "Base Color",
+          id: "baseColor",
+          initial_value: {
+            init_type: "NullInit",
+            init: {
+            }
+          }
+        },
+        {
+          name: "Base Color Tint",
+          id: "baseColorTint",
+          initial_value: {
+            init_type: "Vec4Init",
+            init: {
+              x: 0.0,
+              y: 0.74,
+              z: 0.83,
+              w: 1.0
+            }
+          }
+        },
+        {
+          name: "Metalicity",
+          id: "metallic",
+          initial_value: {
+            init_type: "ScalarInit",
+            init: {
+              value: 1.0
+            }
+          }
+        },
+        {
+          name: "Roughness",
+          id: "roughness",
+          initial_value: {
+            init_type: "ScalarInit",
+            init: {
+              value: 0.1428
+            }
+          }
+        },
+        {
+          name: "Conditionally enabled transparency",
+          id: "opacity",
+          initial_value: {
+            init_type: "NullInit",
+            init: {
+            }
+          }
+        }
+      ],
+      parameter_meta_option_indices: [
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      name: "FBX Material",
+      source: "build/sceneform_sdk/default_materials/obj_material.rcm",
+      parameters: [
+        {
+          name: "Base Color",
+          id: "baseColor",
+          initial_value: {
+            init_type: "NullInit",
+            init: {
+            }
+          }
+        },
+        {
+          name: "Base Color Tint",
+          id: "baseColorTint",
+          initial_value: {
+            init_type: "Vec4Init",
+            init: {
+              x: 1.0,
+              y: 0.92,
+              z: 0.23,
+              w: 1.0
+            }
+          }
+        },
+        {
+          name: "Metalicity",
+          id: "metallic",
+          initial_value: {
+            init_type: "ScalarInit",
+            init: {
+              value: 1.0
+            }
+          }
+        },
+        {
+          name: "Roughness",
+          id: "roughness",
+          initial_value: {
+            init_type: "ScalarInit",
+            init: {
+              value: 0.1428
+            }
+          }
+        },
+        {
+          name: "Conditionally enabled transparency",
+          id: "opacity",
+          initial_value: {
+            init_type: "NullInit",
+            init: {
+            }
+          }
+        }
+      ],
+      parameter_meta_option_indices: [
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  suggestedCollisionShape: {
+    type: "Box",
+    center: {
+      x: 0.0,
+      y: 0.0,
+      z: 0.0
+    },
+    size: {
+      x: 1.0,
+      y: 1.0,
+      z: 1.0
+    }
+  }
+}
