@@ -46,7 +46,7 @@ class StorageManager {
    * Retrieves the cloud anchor ID using a short code. Returns an empty string if a cloud anchor ID
    * was not stored for this short code.
    */
-  String getCloudAnchorID(Activity activity, int shortCode) {
+  String getCloudAnchorId(Activity activity, int shortCode) {
     SharedPreferences sharedPrefs = activity.getPreferences(Context.MODE_PRIVATE);
     return sharedPrefs.getString(KEY_PREFIX + shortCode, "");
   }

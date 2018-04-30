@@ -56,7 +56,6 @@ import com.google.ar.core.exceptions.UnavailableApkTooOldException;
 import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
 import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import java.io.IOException;
-import java.util.Collection;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -102,17 +101,29 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
   @GuardedBy("anchorLock")
   private Anchor anchor;
 
+  private enum AppAnchorState {
+    NONE,
+    HOSTING,
+    HOSTED
+  }
+
+  @GuardedBy("anchorLock")
+  private AppAnchorState appAnchorState = AppAnchorState.NONE;
+
+  /** Handles a single tap during a {@link #onDrawFrame(GL10)} call. */
   private void handleTapOnDraw(TrackingState currentTrackingState, Frame currentFrame) {
     synchronized (singleTapLock) {
       synchronized (anchorLock) {
         if (anchor == null
             && queuedSingleTap != null
-            && currentTrackingState == TrackingState.TRACKING) {
+            && currentTrackingState == TrackingState.TRACKING
+            && appAnchorState == AppAnchorState.NONE) {
           for (HitResult hit : currentFrame.hitTest(queuedSingleTap)) {
             if (shouldCreateAnchorWithHit(hit)) {
               Anchor anchor = session.hostCloudAnchor(hit.createAnchor());
-              snackbarHelper.showMessage(this, "Now hosting anchor...");
               setNewAnchor(anchor);
+              appAnchorState = AppAnchorState.HOSTING;
+              snackbarHelper.showMessage(this, "Now hosting anchor...");
               break;
             }
           }
@@ -140,22 +151,21 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
     return false;
   }
 
-  private void checkUpdatedAnchors(Collection<Anchor> updatedAnchors) {
+  /** Checks the anchor after an update. */
+  private void checkUpdatedAnchor() {
     synchronized (anchorLock) {
-      if (anchor == null) {
+      if (appAnchorState != AppAnchorState.HOSTING) {
+        // Do nothing if the app is not waiting for a hosting action to complete.
         return;
       }
-      if (updatedAnchors.contains(anchor)) {
-        CloudAnchorState cloudState = anchor.getCloudAnchorState();
-        if (cloudState.isError()) {
-          snackbarHelper.showMessageWithDismiss(this, "Error hosting anchor: " + cloudState);
-
-          // Setting the anchor to be null in the case of a failure
-          setNewAnchor(null);
-        } else if (cloudState == CloudAnchorState.SUCCESS) {
-          snackbarHelper.showMessageWithDismiss(
-              this, "Anchor hosted successfully! Cloud ID: " + anchor.getCloudAnchorId());
-        }
+      CloudAnchorState cloudState = anchor.getCloudAnchorState();
+      if (cloudState.isError()) {
+        snackbarHelper.showMessageWithDismiss(this, "Error hosting anchor: " + cloudState);
+        appAnchorState = AppAnchorState.NONE;
+      } else if (cloudState == CloudAnchorState.SUCCESS) {
+        snackbarHelper.showMessageWithDismiss(
+            this, "Anchor hosted successfully! Cloud ID: " + anchor.getCloudAnchorId());
+        appAnchorState = AppAnchorState.HOSTED;
       }
     }
   }
@@ -348,8 +358,8 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
       Camera camera = frame.getCamera();
       TrackingState cameraTrackingState = camera.getTrackingState();
 
-      // Check updated anchors.
-      checkUpdatedAnchors(frame.getUpdatedAnchors());
+      // Check anchor after update.
+      checkUpdatedAnchor();
 
       // Handle taps.
       handleTapOnDraw(cameraTrackingState, frame);
@@ -407,12 +417,15 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
     }
   }
 
+  /** Sets the new anchor in the scene. */
   private void setNewAnchor(@Nullable Anchor newAnchor) {
     synchronized (anchorLock) {
       if (anchor != null) {
         anchor.detach();
       }
       anchor = newAnchor;
+      appAnchorState = AppAnchorState.NONE;
+      snackbarHelper.hide(this);
     }
   }
 }

@@ -22,6 +22,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,12 +31,11 @@ import android.widget.LinearLayout.LayoutParams;
 /** A DialogFragment for the Resolve Dialog Box. */
 public class ResolveDialogFragment extends DialogFragment {
 
+  // The maximum number of characters that can be entered in the EditText.
+  private static final int MAX_FIELD_LENGTH = 10;
+
   interface OkListener {
-    /**
-     * This method is called by the dialog box when its OK button is pressed.
-     *
-     * @param dialogValue the value from the dialog box
-     */
+    /** This method is called by the dialog box when its OK button is pressed. */
     void onOkPressed(String dialogValue);
   }
 
@@ -55,9 +55,12 @@ public class ResolveDialogFragment extends DialogFragment {
     Context context = getContext();
     LinearLayout layout = new LinearLayout(context);
     shortCodeField = new EditText(context);
+    // Only allow numeric input.
     shortCodeField.setInputType(InputType.TYPE_CLASS_NUMBER);
     shortCodeField.setLayoutParams(
         new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+    // Set a max length for the input text to avoid overflows when parsing.
+    shortCodeField.setFilters(new InputFilter[] {new InputFilter.LengthFilter(MAX_FIELD_LENGTH)});
     layout.addView(shortCodeField);
     layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
     return layout;

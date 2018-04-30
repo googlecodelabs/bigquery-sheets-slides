@@ -46,6 +46,7 @@ class StorageManager {
   private static final String KEY_PREFIX = "anchor;";
   private final DatabaseReference rootRef;
 
+  /** Constructor that initializes the Firebase connection. */
   StorageManager(Context context) {
     FirebaseApp firebaseApp = FirebaseApp.initializeApp(context);
     rootRef = FirebaseDatabase.getInstance(firebaseApp).getReference().child(KEY_ROOT_DIR);
@@ -64,6 +65,7 @@ class StorageManager {
               public Transaction.Result doTransaction(MutableData currentData) {
                 Integer shortCode = currentData.getValue(Integer.class);
                 if (shortCode == null) {
+                  // Set the initial short code if one did not exist before.
                   shortCode = 0;
                 }
                 currentData.setValue(shortCode + 1);
@@ -92,18 +94,25 @@ class StorageManager {
    * Retrieves the cloud anchor ID using a short code. Returns an empty string if a cloud anchor ID
    * was not stored for this short code.
    */
-  void getCloudAnchorID(int shortCode, CloudAnchorIdListener listener) {
+  void getCloudAnchorId(int shortCode, CloudAnchorIdListener listener) {
     rootRef
         .child(KEY_PREFIX + shortCode)
         .addListenerForSingleValueEvent(
             new ValueEventListener() {
               @Override
               public void onDataChange(DataSnapshot dataSnapshot) {
+                // Listener invoked when the data is successfully read from Firebase.
                 listener.onCloudAnchorIdAvailable(String.valueOf(dataSnapshot.getValue()));
               }
 
               @Override
-              public void onCancelled(DatabaseError databaseError) {}
+              public void onCancelled(DatabaseError error) {
+                Log.e(
+                    TAG,
+                    "The Firebase operation for getCloudAnchorId was cancelled.",
+                    error.toException());
+                listener.onCloudAnchorIdAvailable(null);
+              }
             });
   }
 }
