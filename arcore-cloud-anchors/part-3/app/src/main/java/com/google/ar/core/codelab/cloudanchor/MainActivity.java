@@ -56,7 +56,6 @@ import com.google.ar.core.exceptions.UnavailableApkTooOldException;
 import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
 import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import java.io.IOException;
-import java.util.Collection;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -156,36 +155,34 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
     return false;
   }
 
-  /** Checks the set of updated anchors. */
-  private void checkUpdatedAnchors(Collection<Anchor> updatedAnchors) {
+  /** Checks the anchor after an update. */
+  private void checkUpdatedAnchor() {
     synchronized (anchorLock) {
       if (appAnchorState != AppAnchorState.HOSTING && appAnchorState != AppAnchorState.RESOLVING) {
         // Do nothing if the app is not waiting for a hosting or resolving action to complete.
         return;
       }
-      if (updatedAnchors.contains(anchor)) {
-        CloudAnchorState cloudState = anchor.getCloudAnchorState();
-        if (appAnchorState == AppAnchorState.HOSTING) {
-          // If the app is waiting for a hosting action to complete.
-          if (cloudState.isError()) {
-            snackbarHelper.showMessageWithDismiss(this, "Error hosting anchor: " + cloudState);
-            appAnchorState = AppAnchorState.NONE;
-          } else if (cloudState == CloudAnchorState.SUCCESS) {
-            int shortCode = storageManager.nextShortCode(this);
-            storageManager.storeUsingShortCode(this, shortCode, anchor.getCloudAnchorId());
-            snackbarHelper.showMessageWithDismiss(
-                this, "Anchor hosted successfully! Cloud Short Code: " + shortCode);
-            appAnchorState = AppAnchorState.HOSTED;
-          }
-        } else if (appAnchorState == AppAnchorState.RESOLVING) {
-          // If the app is waiting for a resolving action to complete.
-          if (cloudState.isError()) {
-            snackbarHelper.showMessageWithDismiss(this, "Error resolving anchor: " + cloudState);
-            appAnchorState = AppAnchorState.NONE;
-          } else if (cloudState == CloudAnchorState.SUCCESS) {
-            snackbarHelper.showMessageWithDismiss(this, "Anchor resolved successfully!");
-            appAnchorState = AppAnchorState.RESOLVED;
-          }
+      CloudAnchorState cloudState = anchor.getCloudAnchorState();
+      if (appAnchorState == AppAnchorState.HOSTING) {
+        // If the app is waiting for a hosting action to complete.
+        if (cloudState.isError()) {
+          snackbarHelper.showMessageWithDismiss(this, "Error hosting anchor: " + cloudState);
+          appAnchorState = AppAnchorState.NONE;
+        } else if (cloudState == CloudAnchorState.SUCCESS) {
+          int shortCode = storageManager.nextShortCode(this);
+          storageManager.storeUsingShortCode(this, shortCode, anchor.getCloudAnchorId());
+          snackbarHelper.showMessageWithDismiss(
+              this, "Anchor hosted successfully! Cloud Short Code: " + shortCode);
+          appAnchorState = AppAnchorState.HOSTED;
+        }
+      } else if (appAnchorState == AppAnchorState.RESOLVING) {
+        // If the app is waiting for a resolving action to complete.
+        if (cloudState.isError()) {
+          snackbarHelper.showMessageWithDismiss(this, "Error resolving anchor: " + cloudState);
+          appAnchorState = AppAnchorState.NONE;
+        } else if (cloudState == CloudAnchorState.SUCCESS) {
+          snackbarHelper.showMessageWithDismiss(this, "Anchor resolved successfully!");
+          appAnchorState = AppAnchorState.RESOLVED;
         }
       }
     }
@@ -409,8 +406,8 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
       Camera camera = frame.getCamera();
       TrackingState cameraTrackingState = camera.getTrackingState();
 
-      // Check updated anchors.
-      checkUpdatedAnchors(frame.getUpdatedAnchors());
+      // Check anchor after update.
+      checkUpdatedAnchor();
 
       // Handle taps.
       handleTapOnDraw(cameraTrackingState, frame);
@@ -476,6 +473,7 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
       }
       anchor = newAnchor;
       appAnchorState = AppAnchorState.NONE;
+      snackbarHelper.hide(this);
     }
   }
 }
