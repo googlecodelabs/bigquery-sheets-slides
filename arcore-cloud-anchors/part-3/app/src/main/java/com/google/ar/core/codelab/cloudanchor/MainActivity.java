@@ -81,12 +81,11 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
   private final float[] viewMatrix = new float[16];
   private final float[] colorCorrectionRgba = new float[4];
 
-  // Locks needed for synchronization.
-  private final Object singleTapLock = new Object();
-  private final Object anchorLock = new Object();
+  // Lock needed for synchronization.
+  private final Object singleTapAnchorLock = new Object();
 
   // Tap handling and UI. This app allows you to place at most one anchor.
-  @GuardedBy("singleTapLock")
+  @GuardedBy("singleTapAnchorLock")
   private MotionEvent queuedSingleTap;
 
   private final SnackbarHelper snackbarHelper = new SnackbarHelper();
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
   private boolean installRequested;
 
   @Nullable
-  @GuardedBy("anchorLock")
+  @GuardedBy("singleTapAnchorLock")
   private Anchor anchor;
 
   private final StorageManager storageManager = new StorageManager();
@@ -111,25 +110,23 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
     RESOLVED
   }
 
-  @GuardedBy("anchorLock")
+  @GuardedBy("singleTapAnchorLock")
   private AppAnchorState appAnchorState = AppAnchorState.NONE;
 
   /** Handles a single tap during a {@link #onDrawFrame(GL10)} call. */
   private void handleTapOnDraw(TrackingState currentTrackingState, Frame currentFrame) {
-    synchronized (singleTapLock) {
-      synchronized (anchorLock) {
-        if (anchor == null
-            && queuedSingleTap != null
-            && currentTrackingState == TrackingState.TRACKING
-            && appAnchorState == AppAnchorState.NONE) {
-          for (HitResult hit : currentFrame.hitTest(queuedSingleTap)) {
-            if (shouldCreateAnchorWithHit(hit)) {
-              Anchor anchor = session.hostCloudAnchor(hit.createAnchor());
-              setNewAnchor(anchor);
-              appAnchorState = AppAnchorState.HOSTING;
-              snackbarHelper.showMessage(this, "Now hosting anchor...");
-              break;
-            }
+    synchronized (singleTapAnchorLock) {
+      if (anchor == null
+          && queuedSingleTap != null
+          && currentTrackingState == TrackingState.TRACKING
+          && appAnchorState == AppAnchorState.NONE) {
+        for (HitResult hit : currentFrame.hitTest(queuedSingleTap)) {
+          if (shouldCreateAnchorWithHit(hit)) {
+            Anchor newAnchor = session.hostCloudAnchor(hit.createAnchor());
+            setNewAnchor(newAnchor);
+            appAnchorState = AppAnchorState.HOSTING;
+            snackbarHelper.showMessage(this, "Now hosting anchor...");
+            break;
           }
         }
       }
@@ -157,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
 
   /** Checks the anchor after an update. */
   private void checkUpdatedAnchor() {
-    synchronized (anchorLock) {
+    synchronized (singleTapAnchorLock) {
       if (appAnchorState != AppAnchorState.HOSTING && appAnchorState != AppAnchorState.RESOLVING) {
         // Do nothing if the app is not waiting for a hosting or resolving action to complete.
         return;
@@ -196,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
   private void onResolveOkPressed(String dialogValue) {
     int shortCode = Integer.parseInt(dialogValue);
     String cloudAnchorId = storageManager.getCloudAnchorId(this, shortCode);
-    synchronized (anchorLock) {
+    synchronized (singleTapAnchorLock) {
       Anchor resolvedAnchor = session.resolveCloudAnchor(cloudAnchorId);
       setNewAnchor(resolvedAnchor);
       snackbarHelper.showMessage(this, "Now resolving anchor...");
@@ -218,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
             new GestureDetector.SimpleOnGestureListener() {
               @Override
               public boolean onSingleTapUp(MotionEvent e) {
-                synchronized (singleTapLock) {
+                synchronized (singleTapAnchorLock) {
                   queuedSingleTap = e;
                 }
                 return true;
@@ -229,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
                 return true;
               }
             });
-    surfaceView.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
+    surfaceView.setOnTouchListener((unusedView, event) -> gestureDetector.onTouchEvent(event));
 
     // Set up renderer.
     surfaceView.setPreserveEGLContextOnPause(true);
@@ -241,12 +238,17 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
 
     // Initialize the "Clear" button. Clicking it will clear the current anchor, if it exists.
     Button clearButton = findViewById(R.id.clear_button);
-    clearButton.setOnClickListener((view) -> setNewAnchor(null));
+    clearButton.setOnClickListener(
+        (unusedView) -> {
+          synchronized (singleTapAnchorLock) {
+            setNewAnchor(null);
+          }
+        });
 
     Button resolveButton = findViewById(R.id.resolve_button);
     resolveButton.setOnClickListener(
         (unusedView) -> {
-          synchronized (anchorLock) {
+          synchronized (singleTapAnchorLock) {
             if (anchor != null) {
               snackbarHelper.showMessageWithDismiss(this, "Please clear anchor first.");
               return;
@@ -439,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
 
       // Visualize anchor.
       boolean shouldDrawAnchor = false;
-      synchronized (anchorLock) {
+      synchronized (singleTapAnchorLock) {
         if (anchor != null && anchor.getTrackingState() == TrackingState.TRACKING) {
           frame.getLightEstimate().getColorCorrection(colorCorrectionRgba, 0);
 
@@ -466,14 +468,13 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
   }
 
   /** Sets the new anchor in the scene. */
+  @GuardedBy("singleTapAnchorLock")
   private void setNewAnchor(@Nullable Anchor newAnchor) {
-    synchronized (anchorLock) {
-      if (anchor != null) {
-        anchor.detach();
-      }
-      anchor = newAnchor;
-      appAnchorState = AppAnchorState.NONE;
-      snackbarHelper.hide(this);
+    if (anchor != null) {
+      anchor.detach();
     }
+    anchor = newAnchor;
+    appAnchorState = AppAnchorState.NONE;
+    snackbarHelper.hide(this);
   }
 }

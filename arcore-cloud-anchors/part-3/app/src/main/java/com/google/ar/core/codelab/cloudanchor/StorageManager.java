@@ -24,11 +24,12 @@ import android.content.SharedPreferences;
 class StorageManager {
   private static final String NEXT_SHORT_CODE = "next_short_code";
   private static final String KEY_PREFIX = "anchor;";
+  private static final int INITIAL_SHORT_CODE = 142;
 
   /** Gets a new short code that can be used to store the anchor ID. */
   int nextShortCode(Activity activity) {
     SharedPreferences sharedPrefs = activity.getPreferences(Context.MODE_PRIVATE);
-    int shortCode = sharedPrefs.getInt(NEXT_SHORT_CODE, 0);
+    int shortCode = sharedPrefs.getInt(NEXT_SHORT_CODE, INITIAL_SHORT_CODE);
     sharedPrefs
         .edit()
         .putInt(NEXT_SHORT_CODE, shortCode + 1)

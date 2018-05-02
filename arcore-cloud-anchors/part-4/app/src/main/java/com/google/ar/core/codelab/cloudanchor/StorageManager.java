@@ -44,6 +44,7 @@ class StorageManager {
   private static final String KEY_ROOT_DIR = "shared_anchor_codelab_root";
   private static final String KEY_NEXT_SHORT_CODE = "next_short_code";
   private static final String KEY_PREFIX = "anchor;";
+  private static final int INITIAL_SHORT_CODE = 142;
   private final DatabaseReference rootRef;
 
   /** Constructor that initializes the Firebase connection. */
@@ -66,7 +67,7 @@ class StorageManager {
                 Integer shortCode = currentData.getValue(Integer.class);
                 if (shortCode == null) {
                   // Set the initial short code if one did not exist before.
-                  shortCode = 0;
+                  shortCode = INITIAL_SHORT_CODE - 1;
                 }
                 currentData.setValue(shortCode + 1);
                 return Transaction.success(currentData);
