@@ -1,9 +1,10 @@
-.idea/
-gen/
+.gradle
+local.properties
+.idea
+build/
 .DS_Store
-Pods/
-Podfile.lock
-xcuserdata/
-*.xcworkspace/
-GoogleService-Info.plist
+*.iml
+*.apk
+*.aar
+*.zip
 google-services.json
