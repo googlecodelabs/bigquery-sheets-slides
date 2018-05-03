@@ -1,20 +1,25 @@
-Sample Title
+Codelabs for ML Kit for Firebase
 ============
 
-Description goes here. (1-2 lines max)
+This repository contains two codelabs for ML Kit for Firebase:
+* Recognize text in images with ML Kit for Firebase
+* Identify objects in images using custom machine learning models with ML Kit for Firebase
 
 Introduction
 ------------
+In these codelabs, you will build an Android app that uses various features
+of ML Kit for Firebase to recognize text and identify objects in images. You
+will learn how to use both the built in on-device and cloud Text Recognition APIs
+and how to use your own Tensor Flow Lite custom models with ML Kit.
 
 Pre-requisites
 --------------
-
-<!--These should be learning materials, not software requirements; samples
-    should be entirely self-contained. Format as URLs in a list.-->
-- [Example](http://github.com/googlesamples/example)
+None.
 
 Getting Started
 ---------------
+Open the `final/` folder in each respective codelab in Android studio to see the final product.
+Visit the Google codelabs site to follow along the guided steps.
 
 Screenshots
 -----------
@@ -22,11 +27,10 @@ Screenshots
 Support
 -------
 
-- Google+ Community: https://plus.google.com/communities/<...>
-- Stack Overflow: http://stackoverflow.com/questions/tagged/<...>
+- Stack Overflow: http://stackoverflow.com/questions/tagged/mlkit
 
 If you've found an error in this sample, please file an issue:
-https://github.com/googlesamples/<...>/issues
+https://github.com/googlecodelabs/ml-kit/issues
 
 Patches are encouraged, and may be submitted by forking this project and
 submitting a pull request through GitHub.
@@ -34,7 +38,7 @@ submitting a pull request through GitHub.
 License
 -------
 
-Copyright 2016 Google, Inc.
+Copyright 2018 Google, Inc.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for
