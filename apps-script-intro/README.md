@@ -1,35 +1,29 @@
-Sample Title
-============
+Apps Script Intro codelab
+=========================
 
-Description goes here. (1-2 lines max)
+This codelab introduces developers to Google Apps Script, our customized JavaScript-in-the-cloud application hosting platform which gives developers integrated access to G Suite, Google, and external services. Access it at http://g.co/codelabs/apps-script-intro.
 
 Introduction
 ------------
 
+In this codelab, we'll introduce you to one of the easiest ways to write code that accesses Google developer technologies, all by leveraging one of the mainstream web development languages, JavaScript. Using Google Apps Script, you will write code to extract an address sitting in a cell in a Google Sheet, generate a Google Map based on that address, and send a link of the map to yourself or a friend using Gmail. The best part? It'll really only be 4 lines of code!
+
 Pre-requisites
 --------------
 
-<!--These should be learning materials, not software requirements; samples
-    should be entirely self-contained. Format as URLs in a list.-->
-- [Example](http://github.com/googlesamples/example)
-
-Getting Started
----------------
-
-Screenshots
------------
+- A Google account
+- Basic JavaScript skills
+- Basic spreadsheet skills
 
 Support
 -------
 
-- Google+ Community: https://plus.google.com/communities/<...>
-- Stack Overflow: http://stackoverflow.com/questions/tagged/<...>
+- Google+ Community: https://plus.google.com/communities/102471985047225101769
+- Stack Overflow: http://stackoverflow.com/questions/tagged/google-apps-script
 
-If you've found an error in this sample, please file an issue:
-https://github.com/googlesamples/<...>/issues
-
-Patches are encouraged, and may be submitted by forking this project and
-submitting a pull request through GitHub.
+If you've found an error in this sample, please file an issue. Patches are
+encouraged, and may be submitted by forking this project and submitting a
+pull request through GitHub.
 
 License
 -------
