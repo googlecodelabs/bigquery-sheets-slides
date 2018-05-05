@@ -8,11 +8,11 @@
 
         <Constraints
             app:constraints="@layout/activity_main"
-            app:region_widthLessThan="580dp" />
+            app:region_widthLessThan="380dp" />
 
         <Constraints
             app:constraints="@layout/activity_main_w600"
-            app:region_widthMoreThan="600dp"
+            app:region_widthMoreThan="380dp"
             />
     </State>
 
@@ -22,11 +22,11 @@
 
         <Constraints
             app:constraints="@layout/activity_main_land"
-            app:region_widthLessThan="780dp" />
+            app:region_widthLessThan="500dp" />
 
         <Constraints
             app:constraints="@layout/activity_main_w800_land"
-            app:region_widthMoreThan="800dp"
+            app:region_widthMoreThan="500dp"
             />
     </State>
 </ConstraintLayoutStates>
