@@ -27,10 +27,8 @@ import com.google.example.resizecodelab.model.Suggestion
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.v7.widget.LinearLayoutManager
 import android.transition.*
-import android.view.View
 import android.view.View.*
 import android.view.animation.AnticipateOvershootInterpolator
-import android.view.ViewGroup
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main_shell)
 
         //Set up constraint layout animations
-        constraintMain.setLayoutDescription(R.xml.contraintset_manager)
+        constraintMain.setLayoutDescription(R.xml.constraint_states)
         constraintMain.setOnConstraintsChanged(object : ConstraintsChangedListener() {
 
             override fun preLayoutChange(state: Int, layoutId: Int) {
@@ -101,7 +99,6 @@ class MainActivity : AppCompatActivity() {
                 //Request all layout elements be redrawn
                 constraintMain.requestLayout()
             }
-
         })
 
         //Retrieve the ViewModel with state data
@@ -158,7 +155,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-
         configurationUpdate(newConfig)
     }
 

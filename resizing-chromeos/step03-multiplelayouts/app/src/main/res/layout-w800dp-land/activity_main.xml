@@ -29,6 +29,13 @@
         android:descendantFocusability="blocksDescendants">
 
         <android.support.constraint.Guideline
+            android:id="@+id/guidelineRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.4" />
+
+        <android.support.constraint.Guideline
             android:id="@+id/guidelineImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,6 +48,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.45" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guidelineSuggested"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.1" />
 
         <ImageView
             android:id="@+id/imageProduct"

@@ -16,14 +16,28 @@ package com.google.example.resizecodelab.view
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.res.Configuration
 import android.os.Bundle
+import android.support.constraint.ConstraintsChangedListener
+import android.support.v4.widget.TextViewCompat
 import android.support.v7.app.AppCompatActivity
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.support.v7.widget.GridLayoutManager
 import com.google.example.resizecodelab.R
 import com.google.example.resizecodelab.model.AppData
 import com.google.example.resizecodelab.model.Suggestion
 import kotlinx.android.synthetic.main.activity_main.*
+import android.support.v7.widget.LinearLayoutManager
+import android.transition.*
+import android.view.Gravity
+import android.view.View
+import android.view.View.*
+import android.view.ViewGroup
+import android.view.animation.AnticipateOvershootInterpolator
+import android.widget.FrameLayout
+import android.widget.PopupWindow
+import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main_shell.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,7 +52,62 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main_shell)
+
+        //Set up constraint layout animations
+        constraintMain.setLayoutDescription(R.xml.constraint_states)
+        constraintMain.setOnConstraintsChanged(object : ConstraintsChangedListener() {
+
+            override fun preLayoutChange(state: Int, layoutId: Int) {
+                //Layout files are no longer replaced so we manually propogate changes
+                progressLoadingReviews.visibility = if (viewModel.appData.value == null) VISIBLE else INVISIBLE
+
+                val changeBounds = ChangeBounds()
+                changeBounds.duration = 600
+                changeBounds.interpolator = AnticipateOvershootInterpolator(0.2f)
+
+                TransitionManager.beginDelayedTransition(constraintMain, changeBounds)
+
+                when (layoutId) {
+                    R.layout.activity_main -> {
+                        val reviewLayoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
+                        recyclerReviews.layoutManager = reviewLayoutManager
+
+                        val suggestionLayoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.HORIZONTAL, false)
+                        recyclerSuggested.layoutManager = suggestionLayoutManager
+                    }
+
+                    R.layout.activity_main_land -> {
+                        val reviewLayoutManager = GridLayoutManager(baseContext, 2)
+                        recyclerReviews.layoutManager = reviewLayoutManager
+
+                        val suggestionLayoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.HORIZONTAL, false)
+                        recyclerSuggested.layoutManager = suggestionLayoutManager
+                    }
+
+                    R.layout.activity_main_w400 -> {
+                        val reviewLayoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
+                        recyclerReviews.layoutManager = reviewLayoutManager
+
+                        val suggestionLayoutManager = GridLayoutManager(baseContext, 2)
+                        recyclerSuggested.layoutManager = suggestionLayoutManager
+                    }
+
+                    R.layout.activity_main_w600_land -> {
+                        val reviewLayoutManager = GridLayoutManager(baseContext, 2)
+                        recyclerReviews.layoutManager = reviewLayoutManager
+
+                        val suggestionLayoutManager = GridLayoutManager(baseContext, 3)
+                        recyclerSuggested.layoutManager = suggestionLayoutManager
+                    }
+                }
+            }
+
+            override fun postLayoutChange(stateId: Int, layoutId: Int) {
+                //Request all layout elements be redrawn
+                constraintMain.requestLayout()
+            }
+        })
 
         //Retrieve the ViewModel with state data
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -50,14 +119,12 @@ class MainActivity : AppCompatActivity() {
         //Set up recycler view for reviews
         reviewAdapter = ReviewAdapter()
         recyclerReviews.apply {
-            setHasFixedSize(true)
             adapter = reviewAdapter
         }
 
         //Set up recycler view for suggested products
         suggestionAdapter = SuggestionAdapter()
         recyclerSuggested.apply {
-            setHasFixedSize(true)
             adapter = suggestionAdapter
         }
         suggestionAdapter.updateSuggestions(getSuggestedProducts())
@@ -83,6 +150,41 @@ class MainActivity : AppCompatActivity() {
 
             textProductDescription.text = getDescriptionText(viewModel.appData.value)
         })
+
+        buttonPurchase.setOnClickListener(View.OnClickListener {
+            val textPopupMessage = TextView(this)
+            textPopupMessage.gravity = Gravity.CENTER
+            textPopupMessage.text = getString(R.string.popup_purchase)
+            TextViewCompat.setTextAppearance(textPopupMessage, R.style.TextAppearance_AppCompat_Title)
+
+            val layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER)
+            val framePopup = FrameLayout(this)
+            framePopup.layoutParams = layoutParams
+            framePopup.setBackgroundColor(getColor(R.color.background_floating_material_light))
+
+            framePopup.addView(textPopupMessage)
+
+            //Get window size
+            val displayMetrics = resources.displayMetrics
+            val screenWidthPx = displayMetrics.widthPixels
+            val screenHeightPx = displayMetrics.heightPixels
+
+            //Popup should be 50% of window size
+            val popupWidthPx = screenWidthPx / 2
+            val popupHeightPx = screenHeightPx / 2
+
+            //Place it in the middle of the window
+            val popupX = (screenWidthPx / 2) - (popupWidthPx / 2)
+            val popupY = (screenHeightPx / 2) - (popupHeightPx / 2)
+
+            //Show the window
+            val popupWindow = PopupWindow(framePopup, popupWidthPx, popupHeightPx, true)
+            popupWindow.elevation = 10f
+            popupWindow.showAtLocation(scrollMain, Gravity.NO_GRAVITY, popupX, popupY)
+        })
+
+        //On first load, make sure we are showing the correct layout
+        configurationUpdate(resources.configuration)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -91,10 +193,22 @@ class MainActivity : AppCompatActivity() {
         outState?.putString(KEY_PRODUCT_NAME, viewModel.productName.value)
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        configurationUpdate(newConfig)
+    }
+
+    private fun configurationUpdate(configuration: Configuration) {
+        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+            constraintMain.setState(R.id.constraintStateLandscape, configuration.screenWidthDp, configuration.screenHeightDp)
+        else
+            constraintMain.setState(R.id.constraintStatePortrait, configuration.screenWidthDp, configuration.screenHeightDp)
+    }
+
     private fun handleReviewsUpdate(appData: AppData?) {
-        progressLoadingReviews.visibility = if (appData == null) VISIBLE else GONE
-        buttonPurchase.visibility = if (appData != null) VISIBLE else GONE
-        buttonExpand.visibility = if (appData != null) VISIBLE else GONE
+        progressLoadingReviews.visibility = if (appData == null) VISIBLE else INVISIBLE
+        buttonPurchase.visibility = if (appData != null) VISIBLE else INVISIBLE
+        buttonExpand.visibility = if (appData != null) VISIBLE else INVISIBLE
         appData?.let {
             textProductName.text = it.title
             textProductCompany.text = it.developer

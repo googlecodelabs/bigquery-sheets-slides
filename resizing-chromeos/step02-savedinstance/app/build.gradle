@@ -33,7 +33,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -43,6 +45,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    //implementation files('libs/constraint-debug.aar')
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     kapt "android.arch.lifecycle:compiler:1.1.1"
     implementation 'com.android.support:support-v4:27.1.1'

@@ -24,11 +24,18 @@
     android:descendantFocusability="blocksDescendants">
 
     <android.support.constraint.Guideline
+        android:id="@+id/guidelineRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <android.support.constraint.Guideline
         android:id="@+id/guidelineImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.3" />
+        app:layout_constraintGuide_percent="0.2" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guidelineSplit"
@@ -52,10 +59,8 @@
         android:layout_marginTop="16dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/access_product_image"
-        android:maxHeight="300dp"
-        android:maxWidth="300dp"
         android:scaleType="fitCenter"
-        app:layout_constraintEnd_toStartOf="@id/guidelineImage"
+        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/whizzbuckling" />
@@ -69,8 +74,8 @@
         android:layout_marginTop="16dp"
         android:text="@string/label_product_name"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-        app:layout_constraintStart_toEndOf="@+id/imageProduct"
         app:layout_constraintEnd_toStartOf="@+id/progressLoadingReviews"
+        app:layout_constraintStart_toEndOf="@+id/imageProduct"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/label_product_name" />
 
@@ -97,7 +102,7 @@
         android:paddingEnd="32dp"
         android:paddingStart="32dp"
         android:text="@string/button_purchase"
-        app:layout_constraintEnd_toStartOf="@id/guidelineSplit"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textProductName"
         app:layout_constraintTop_toBottomOf="@+id/textProductCompany" />
 
@@ -106,7 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:layout_constraintEnd_toStartOf="@id/guidelineSplit"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -116,10 +121,10 @@
         android:layout_margin="16dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toStartOf="@id/guidelineSplit"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textProductName"
         app:layout_constraintTop_toBottomOf="@id/buttonPurchase"
-        tools:text="Product Description" />
+        tools:text="@tools:sample/lorem/random" />
 
     <Button
         android:id="@+id/buttonExpand"
@@ -139,9 +144,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:layout_constraintBottom_toBottomOf="@+id/imageProduct"
         app:constraint_referenced_ids="buttonExpand,imageProduct"
-        tools:layout_editor_absoluteY="16dp" />
+         />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerReviews"
@@ -151,25 +155,22 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:layoutManager="android.support.v7.widget.GridLayoutManager"
-        app:spanCount="2"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guidelineSplit"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guidelineRight"
+        app:layout_constraintTop_toBottomOf="@+id/barrierHorizontal"
         tools:listitem="@layout/list_item_review" />
 
     <TextView
         android:id="@+id/textSuggested"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:text="@string/label_suggested"
         android:textAlignment="viewStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineSplit"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/guidelineSuggested"
         app:layout_constraintTop_toBottomOf="@+id/barrierHorizontal"
         />
 
@@ -177,13 +178,12 @@
         android:id="@+id/recyclerSuggested"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:orientation="vertical"
+        android:layout_marginEnd="8dp"
         app:layoutManager="android.support.v7.widget.GridLayoutManager"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineSplit"
+        app:spanCount="2"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textSuggested"
-        app:spanCount="3"
         tools:listitem="@layout/list_item_suggested" />
 
 </android.support.constraint.ConstraintLayout>

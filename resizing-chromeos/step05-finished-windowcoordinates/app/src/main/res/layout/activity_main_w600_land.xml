@@ -60,7 +60,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/access_product_image"
         android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+        app:layout_constraintEnd_toStartOf="@id/guidelineImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/whizzbuckling" />
@@ -70,11 +70,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:text="@string/label_product_name"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+        app:layout_constraintStart_toEndOf="@+id/guidelineImage"
         app:layout_constraintEnd_toStartOf="@+id/progressLoadingReviews"
-        app:layout_constraintStart_toEndOf="@+id/imageProduct"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/label_product_name" />
 
@@ -84,10 +85,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:text="@string/label_product_company"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintEnd_toStartOf="@+id/progressLoadingReviews"
-        app:layout_constraintStart_toEndOf="@+id/imageProduct"
+        app:layout_constraintStart_toEndOf="@+id/guidelineImage"
         app:layout_constraintTop_toBottomOf="@+id/textProductName"
         tools:text="@string/label_product_company" />
 
@@ -101,8 +102,7 @@
         android:paddingEnd="32dp"
         android:paddingStart="32dp"
         android:text="@string/button_purchase"
-        app:layout_constraintBottom_toBottomOf="@+id/imageProduct"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guidelineSplit"
         app:layout_constraintStart_toStartOf="@+id/textProductName"
         app:layout_constraintTop_toBottomOf="@+id/textProductCompany" />
 
@@ -110,8 +110,8 @@
         android:id="@+id/progressLoadingReviews"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toStartOf="@id/guidelineSplit"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -120,17 +120,18 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageProduct"
-        app:layout_constraintTop_toBottomOf="@+id/imageProduct"
-        tools:text="@tools:sample/lorem/random" />
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@id/guidelineSplit"
+        app:layout_constraintStart_toStartOf="@+id/textProductName"
+        app:layout_constraintTop_toBottomOf="@id/buttonPurchase"
+        tools:text="Product Description" />
 
     <Button
         android:id="@+id/buttonExpand"
         style="@style/Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:padding="16dp"
         android:text="@string/button_expand"
         android:textAllCaps="true"
@@ -151,36 +152,43 @@
         android:id="@+id/recyclerReviews"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:spanCount="2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonExpand" />
+        app:layout_constraintStart_toStartOf="@id/guidelineSplit"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/list_item_review" />
 
     <TextView
         android:id="@+id/textSuggested"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/label_suggested"
         android:textAlignment="viewStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineSplit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerReviews" />
+        app:layout_constraintTop_toBottomOf="@+id/barrierHorizontal"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerSuggested"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineSplit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textSuggested"
+        app:spanCount="3"
         tools:listitem="@layout/list_item_suggested" />
 
 </android.support.constraint.ConstraintLayout>

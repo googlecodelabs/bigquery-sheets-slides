@@ -30,4 +30,5 @@
     <string name="button_expand">Expand</string>
     <string name="button_collapse">Collapse</string>
     <string name="access_product_image">Product Image</string>
+    <string name="popup_purchase">You are now the proud owner of a Whizzbuckling Whipplebot</string>
 </resources>
