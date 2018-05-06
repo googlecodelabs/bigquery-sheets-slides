@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Integer mImageMaxHeight;
     private boolean mIsLandScape;
     private final String[] mFilePaths =
-            new String[]{"mountain.jpg", "tree.jpg", "tennis.jpg"};
+            new String[]{"mountain.jpg", "tennis.jpg"};
     /**
      * Name of the model file hosted with Firebase.
      */
