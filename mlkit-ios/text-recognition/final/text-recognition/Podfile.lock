@@ -1,0 +1,82 @@
+PODS:
+  - Firebase/Core (5.0.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (= 5.0.0)
+  - Firebase/CoreOnly (5.0.0):
+    - FirebaseCore (= 5.0.0)
+  - Firebase/MLVision (5.0.0):
+    - Firebase/CoreOnly
+    - FirebaseMLVision (= 0.9.0)
+  - Firebase/MLVisionTextModel (5.0.0):
+    - Firebase/CoreOnly
+    - FirebaseMLVisionTextModel (= 0.9.0)
+  - FirebaseAnalytics (5.0.0):
+    - FirebaseCore (~> 5.0)
+    - FirebaseInstanceID (~> 3.0)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - nanopb (~> 0.3)
+  - FirebaseCore (5.0.0):
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseInstanceID (3.0.0):
+    - FirebaseCore (~> 5.0)
+  - FirebaseMLCommon (0.9.0)
+  - FirebaseMLVision (0.9.0):
+    - FirebaseCore (~> 5.0)
+    - FirebaseMLCommon (~> 0.9)
+    - GoogleAPIClientForREST/Core (~> 1.3)
+    - GoogleAPIClientForREST/Vision (~> 1.3)
+    - GoogleMobileVision/Detector (~> 1.3.0)
+  - FirebaseMLVisionTextModel (0.9.0):
+    - GoogleMobileVision/TextDetector (~> 1.3.0)
+  - GoogleAPIClientForREST/Core (1.3.4):
+    - GTMSessionFetcher (>= 1.1.7)
+  - GoogleAPIClientForREST/Vision (1.3.4):
+    - GoogleAPIClientForREST/Core
+    - GTMSessionFetcher (>= 1.1.7)
+  - GoogleMobileVision/Detector (1.3.0):
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.1)
+  - GoogleMobileVision/TextDetector (1.3.0):
+    - GoogleMobileVision/Detector (~> 1.3)
+  - GoogleToolboxForMac/Defines (2.1.4)
+  - GoogleToolboxForMac/Logger (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GoogleToolboxForMac/NSData+zlib (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GTMSessionFetcher (1.1.15):
+    - GTMSessionFetcher/Full (= 1.1.15)
+  - GTMSessionFetcher/Core (1.1.15)
+  - GTMSessionFetcher/Full (1.1.15):
+    - GTMSessionFetcher/Core (= 1.1.15)
+  - nanopb (0.3.8):
+    - nanopb/decode (= 0.3.8)
+    - nanopb/encode (= 0.3.8)
+  - nanopb/decode (0.3.8)
+  - nanopb/encode (0.3.8)
+  - Protobuf (3.5.0)
+
+DEPENDENCIES:
+  - Firebase/Core
+  - Firebase/MLVision
+  - Firebase/MLVisionTextModel
+
+SPEC CHECKSUMS:
+  Firebase: d68a88a03bdd51cc53a318184544e2f733b83e8a
+  FirebaseAnalytics: bc2bd82ac96e763ad41854e288db40e766634b3f
+  FirebaseCore: a8a9bd08445d106f7a918dbfb9729e546f6a5f0b
+  FirebaseInstanceID: 46f51379ea7336e2be5082dece37985f58363d24
+  FirebaseMLCommon: 0f70a57858180b4024211bf6d08a3e109bfb2139
+  FirebaseMLVision: 01d30b775fed92937c4ecaf94bc4c4602b3a6e09
+  FirebaseMLVisionTextModel: 3ca7555f562237db236136c5a3c9946cb46f1a5b
+  GoogleAPIClientForREST: f7951c455df271bc6259b3ddb4073d0026475ccf
+  GoogleMobileVision: 8a7a9a00c03f9e59f57ace532dc828f1e3e22494
+  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
+  GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
+  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
+
+PODFILE CHECKSUM: fec582c0e695978c5de7c3269b97a418be257fa7
+
+COCOAPODS: 1.4.0

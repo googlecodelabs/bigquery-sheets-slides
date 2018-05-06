@@ -1,0 +1,17 @@
+Source of content:
+
+# css/bootstrap.css
+- Main library: Bootstrap
+  https://getbootstrap.com/
+  https://github.com/twbs/bootstrap
+  MIT license - Twitter
+  https://github.com/twbs/bootstrap/blob/v4-dev/LICENSE
+  https://github.com/twbs/bootstrap/blob/v4-dev/README.md
+  
+# css/mysite.css
+- HTML & CSS "Start Bootstrap" - "modern business" template
+  http://html5-templates.com/preview/bootstrap.html
+  MIT license - Blackrock Digital LLC.
+  https://github.com/BlackrockDigital/startbootstrap-modern-business
+  https://github.com/BlackrockDigital/startbootstrap-modern-business/blob/master/LICENSE
+  https://github.com/BlackrockDigital/startbootstrap-modern-business/blob/master/README.md

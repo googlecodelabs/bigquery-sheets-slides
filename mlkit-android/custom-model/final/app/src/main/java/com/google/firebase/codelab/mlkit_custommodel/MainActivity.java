@@ -31,18 +31,29 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.common.FirebaseMLException;
 import com.google.firebase.ml.custom.FirebaseModelDataType;
 import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions;
+import com.google.firebase.ml.custom.FirebaseModelInputs;
 import com.google.firebase.ml.custom.FirebaseModelInterpreter;
+import com.google.firebase.ml.custom.FirebaseModelManager;
 import com.google.firebase.ml.custom.FirebaseModelOptions;
+import com.google.firebase.ml.custom.FirebaseModelOutputs;
+import com.google.firebase.ml.custom.model.FirebaseCloudModelSource;
+import com.google.firebase.ml.custom.model.FirebaseModelDownloadConditions;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -58,25 +69,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // Max height (portrait mode)
     private Integer mImageMaxHeight;
     private boolean mIsLandScape;
-
-    /** Name of the model file hosted with Firebase. */
-    private static final String HOSTED_MODEL_NAME = "mobilenet_v1_1.0_224_quant.tflite";
-
-    /** Name of the label file stored in Assets. */
+    private final String[] mFilePaths =
+            new String[]{"mountain.jpg", "tree.jpg", "tennis.jpg"};
+    /**
+     * Name of the model file hosted with Firebase.
+     */
+    private static final String HOSTED_MODEL_NAME = "mobilenet_v1_224_quant";
+    /**
+     * Name of the label file stored in Assets.
+     */
     private static final String LABEL_PATH = "labels.txt";
-
-    /** Number of results to show in the UI. */
+    /**
+     * Number of results to show in the UI.
+     */
     private static final int RESULTS_TO_SHOW = 3;
-
-    /** Dimensions of inputs. */
+    /**
+     * Dimensions of inputs.
+     */
     private static final int DIM_BATCH_SIZE = 1;
-
     private static final int DIM_PIXEL_SIZE = 3;
-
     private static final int DIM_IMG_SIZE_X = 224;
     private static final int DIM_IMG_SIZE_Y = 224;
-
-    /** Labels corresponding to the output of the vision model. */
+    /**
+     * Labels corresponding to the output of the vision model.
+     */
     private List<String> mLabelList;
 
     private final PriorityQueue<Map.Entry<String, Float>> sortedLabels =
@@ -84,14 +100,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     RESULTS_TO_SHOW,
                     new Comparator<Map.Entry<String, Float>>() {
                         @Override
-                        public int compare(Map.Entry<String, Float> o1, Map.Entry<String, Float> o2) {
+                        public int compare(Map.Entry<String, Float> o1, Map.Entry<String, Float>
+                                o2) {
                             return (o1.getValue()).compareTo(o2.getValue());
                         }
                     });
-    /** An instance of the driver class to run model inference with Firebase. */
+    /* Preallocated buffers for storing image data. */
+    private final int[] intValues = new int[DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y];
+    /**
+     * An instance of the driver class to run model inference with Firebase.
+     */
     private FirebaseModelInterpreter mInterpreter;
-
-    /** Data configuration of input & output data of model. */
+    /**
+     * Data configuration of input & output data of model.
+     */
     private FirebaseModelInputOutputOptions mDataOptions;
 
     @Override
@@ -102,41 +124,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mImageView = findViewById(R.id.image_view);
 
         Spinner dropdown = findViewById(R.id.spinner);
-        String[] items = new String[]{"Image 1", "Image 2", "Image 3"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        List<String> items = new ArrayList<>();
+        for (int i = 0; i < mFilePaths.length; i++) {
+            items.add("Image " + (i + 1));
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout
+                .simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
         dropdown.setOnItemSelectedListener(this);
 
-        FirebaseModelOptions modelOptions =
-                new FirebaseModelOptions.Builder()
-                        .setCloudModelName("mobilenet_v1")
-                        .build();
-        int[] inputDims = {DIM_BATCH_SIZE, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, DIM_PIXEL_SIZE};
-        int[] outputDims = {1, mLabelList.size()};
-        try {
-            mInterpreter = FirebaseModelInterpreter.getInstance(modelOptions);
-            mDataOptions =
-                    new FirebaseModelInputOutputOptions.Builder()
-                            .setInputFormat(0, FirebaseModelDataType.BYTE, inputDims)
-                            .setOutputFormat(0, FirebaseModelDataType.BYTE, outputDims)
-                            .build();
-        } catch (FirebaseMLException e) {
-            showToast("Error while setting up the model");
-            e.printStackTrace();
-        }
         mLabelList = loadLabelList(this);
-
-//        FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
-//                .requireWifi()
-//                .build();
-//
-//        FirebaseCloudModelSource cloudSource = new FirebaseCloudModelSource.Builder()
-//                .setModelName("my_model")  // Specify the name you assigned the model in the console
-//                .enableModelUpdates(true)
-//                .setInitialDownloadConditions(conditions)
-//                .setUpdatesDownloadConditions(conditions)  // You could also specify different conditions
-//                // for updates
-//                .build();
         mRun = findViewById(R.id.button_run);
         mRun.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,17 +142,106 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 runModelInference();
             }
         });
+
+        int[] inputDims = {DIM_BATCH_SIZE, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, DIM_PIXEL_SIZE};
+        int[] outputDims = {1, mLabelList.size()};
+        try {
+            mDataOptions =
+                    new FirebaseModelInputOutputOptions.Builder()
+                            .setInputFormat(0, FirebaseModelDataType.BYTE, inputDims)
+                            .setOutputFormat(0, FirebaseModelDataType.BYTE, outputDims)
+                            .build();
+            FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions
+                    .Builder()
+                    .requireWifi()
+                    .build();
+
+            FirebaseCloudModelSource cloudSource = new FirebaseCloudModelSource.Builder
+                    (HOSTED_MODEL_NAME)
+                    .enableModelUpdates(true)
+                    .setInitialDownloadConditions(conditions)
+                    .setUpdatesDownloadConditions(conditions)  // You could also specify
+                    // different conditions
+                    // for updates
+                    .build();
+            FirebaseModelManager manager = FirebaseModelManager.getInstance();
+            manager.registerCloudModelSource(cloudSource);
+            FirebaseModelOptions modelOptions =
+                    new FirebaseModelOptions.Builder()
+                            .setCloudModelName(HOSTED_MODEL_NAME)
+                            .build();
+            mInterpreter = FirebaseModelInterpreter.getInstance(modelOptions);
+        } catch (FirebaseMLException e) {
+            showToast("Error while setting up the model");
+            e.printStackTrace();
+        }
     }
 
     private void runModelInference() {
+        if (mInterpreter == null) {
+            Log.e(TAG, "Image classifier has not been initialized; Skipped.");
+            return;
+        }
+        // Create input data.
+        ByteBuffer imgData = convertBitmapToByteBuffer(mSelectedImage, mSelectedImage.getWidth(),
+                mSelectedImage.getHeight());
+
+        try {
+            FirebaseModelInputs inputs = new FirebaseModelInputs.Builder().add(imgData).build();
+            // Here's where the magic happens!!
+            mInterpreter
+                    .run(inputs, mDataOptions)
+                    .continueWith(
+                            new Continuation<FirebaseModelOutputs, List<String>>() {
+                                @Override
+                                public List<String> then(Task<FirebaseModelOutputs> task) {
+                                    byte[][] labelProbArray = task.getResult()
+                                            .<byte[][]>getOutput(0);
+                                    List<String> topLabels = getTopLabels(labelProbArray);
+                                    mGraphicOverlay.clear();
+                                    GraphicOverlay.Graphic labelGraphic = new LabelGraphic
+                                            (mGraphicOverlay, topLabels);
+                                    mGraphicOverlay.add(labelGraphic);
+                                    return topLabels;
+                                }
+                            });
+        } catch (FirebaseMLException e) {
+            e.printStackTrace();
+            showToast("Error running model inference");
+        }
 
     }
 
-    /** Reads label list from Assets. */
+    /**
+     * Gets the top labels in the results.
+     */
+    private synchronized List<String> getTopLabels(byte[][] labelProbArray) {
+        for (int i = 0; i < mLabelList.size(); ++i) {
+            sortedLabels.add(
+                    new AbstractMap.SimpleEntry<>(mLabelList.get(i), (labelProbArray[0][i] &
+                            0xff) / 255.0f));
+            if (sortedLabels.size() > RESULTS_TO_SHOW) {
+                sortedLabels.poll();
+            }
+        }
+        List<String> result = new ArrayList<>();
+        final int size = sortedLabels.size();
+        for (int i = 0; i < size; ++i) {
+            Map.Entry<String, Float> label = sortedLabels.poll();
+            result.add(label.getKey() + ":" + label.getValue());
+        }
+        Log.d(TAG, "labels: " + result.toString());
+        return result;
+    }
+
+    /**
+     * Reads label list from Assets.
+     */
     private List<String> loadLabelList(Activity activity) {
         List<String> labelList = new ArrayList<>();
         try (BufferedReader reader =
-                     new BufferedReader(new InputStreamReader(activity.getAssets().open(LABEL_PATH)))) {
+                     new BufferedReader(new InputStreamReader(activity.getAssets().open
+                             (LABEL_PATH)))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 labelList.add(line);
@@ -165,26 +252,40 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return labelList;
     }
 
+    /**
+     * Writes Image data into a {@code ByteBuffer}.
+     */
+    private synchronized ByteBuffer convertBitmapToByteBuffer(
+            Bitmap bitmap, int width, int height) {
+        ByteBuffer imgData =
+                ByteBuffer.allocateDirect(
+                        DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE);
+        imgData.order(ByteOrder.nativeOrder());
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y,
+                true);
+        imgData.rewind();
+        scaledBitmap.getPixels(intValues, 0, scaledBitmap.getWidth(), 0, 0,
+                scaledBitmap.getWidth(), scaledBitmap.getHeight());
+        // Convert the image to int points.
+        int pixel = 0;
+        for (int i = 0; i < DIM_IMG_SIZE_X; ++i) {
+            for (int j = 0; j < DIM_IMG_SIZE_Y; ++j) {
+                final int val = intValues[pixel++];
+                imgData.put((byte) ((val >> 16) & 0xFF));
+                imgData.put((byte) ((val >> 8) & 0xFF));
+                imgData.put((byte) (val & 0xFF));
+            }
+        }
+        return imgData;
+    }
+
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
         mGraphicOverlay.clear();
-        switch (position) {
-            case 0:
-                mSelectedImage = getBitmapFromAsset(this, "Please_walk_on_the_grass.jpg");
-
-                break;
-            case 1:
-                // Whatever you want to happen when the second item gets selected
-                mSelectedImage = getBitmapFromAsset(this, "non-latin.jpg");
-                break;
-            case 2:
-                // Whatever you want to happen when the thrid item gets selected
-                mSelectedImage = getBitmapFromAsset(this, "nl2.jpg");
-                break;
-        }
+        mSelectedImage = getBitmapFromAsset(this, mFilePaths[position]);
         if (mSelectedImage != null) {
             // Get the dimensions of the View
             Pair<Integer, Integer> targetedSize = getTargetedWidthHeight();
@@ -210,14 +311,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    // Functions for loading images from app assets.
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Do nothing
+    }
+
+    // Utility functions for loading and resizing images from app asset folder.
+    public static Bitmap getBitmapFromAsset(Context context, String filePath) {
+        AssetManager assetManager = context.getAssets();
+
+        InputStream is;
+        Bitmap bitmap = null;
+        try {
+            is = assetManager.open(filePath);
+            bitmap = BitmapFactory.decodeStream(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
 
     // Returns max image width, always for portrait mode. Caller needs to swap width / height for
     // landscape mode.
     private Integer getImageMaxWidth() {
         if (mImageMaxWidth == null) {
-            // Calculate the max width in portrait mode. This is done lazily since we need to wait for
-            // a UI layout pass to get the right values. So delay it to first time image rendering time.
+            // Calculate the max width in portrait mode. This is done lazily since we need to
+            // wait for
+            // a UI layout pass to get the right values. So delay it to first time image
+            // rendering time.
             if (mIsLandScape) {
                 mImageMaxWidth =
                         mImageView.getHeight();
@@ -233,8 +355,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // landscape mode.
     private Integer getImageMaxHeight() {
         if (mImageMaxHeight == null) {
-            // Calculate the max width in portrait mode. This is done lazily since we need to wait for
-            // a UI layout pass to get the right values. So delay it to first time image rendering time.
+            // Calculate the max width in portrait mode. This is done lazily since we need to
+            // wait for
+            // a UI layout pass to get the right values. So delay it to first time image
+            // rendering time.
             if (mIsLandScape) {
                 mImageMaxHeight = mImageView.getWidth();
             } else {
@@ -245,6 +369,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         return mImageMaxHeight;
     }
+
     // Gets the targeted width / height.
     private Pair<Integer, Integer> getTargetedWidthHeight() {
         int targetWidth;
@@ -254,25 +379,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         targetWidth = mIsLandScape ? maxHeightForPortraitMode : maxWidthForPortraitMode;
         targetHeight = mIsLandScape ? maxWidthForPortraitMode : maxHeightForPortraitMode;
         return new Pair<>(targetWidth, targetHeight);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Do nothing
-    }
-
-    public static Bitmap getBitmapFromAsset(Context context, String filePath) {
-        AssetManager assetManager = context.getAssets();
-
-        InputStream is;
-        Bitmap bitmap = null;
-        try {
-            is = assetManager.open(filePath);
-            bitmap = BitmapFactory.decodeStream(is);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return bitmap;
     }
 }

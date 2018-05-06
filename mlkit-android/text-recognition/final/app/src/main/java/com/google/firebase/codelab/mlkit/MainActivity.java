@@ -35,7 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.codelab.mlkit.GraphicOverlay.Graphic;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.cloud.FirebaseVisionCloudDetectorOptions;
-import com.google.firebase.ml.vision.cloud.document.FirebaseVisionCloudDocumentTextDetector;
+import com.google.firebase.ml.vision.cloud.text.FirebaseVisionCloudDocumentTextDetector;
 import com.google.firebase.ml.vision.cloud.text.FirebaseVisionCloudText;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
