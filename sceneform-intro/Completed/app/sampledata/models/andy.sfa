@@ -1,10 +1,10 @@
 {
    materials: [
       {
-         name: "lambert3SG",
+         name: "unlit_material",
          parameters: [
             {
-               baseColor: "Cabin Texture",
+               baseColor: "andy",
             },
             {
                baseColorTint: [
@@ -15,7 +15,7 @@
                ],
             },
             {
-               metallic: 0,
+               metallic: 1,
             },
             {
                roughness: 1,
@@ -24,7 +24,7 @@
                opacity: null,
             },
          ],
-         source: "build/sceneform_sdk/default_materials/obj_material.rcm",
+         source: "build/sceneform_sdk/default_materials/obj_material.sfm",
       },
    ],
    model: {
@@ -33,9 +33,8 @@
          "TexCoord",
          "Orientation",
       ],
-      file: "sampledata/models/Cabin.obj",
-      name: "Cabin",
-      scale: 0.0005,
+      file: "sampledata/models/andy.obj",
+      name: "andy",
       suggested_collision: {
          center: {
             x: 0,
@@ -52,9 +51,9 @@
    },
    samplers: [
       {
-         file: "sampledata/models/Cabin Texture.png",
-         name: "Cabin Texture",
-         pipeline_name: "Cabin Texture.png",
+         file: "sampledata/models/andy.png",
+         name: "andy",
+         pipeline_name: "andy.png",
       },
    ],
    version: "0.51:1",

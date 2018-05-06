@@ -1,6 +1,32 @@
 {
    materials: [
       {
+         name: "mat12.002",
+         parameters: [
+            {
+               baseColor: null,
+            },
+            {
+               baseColorTint: [
+                  1,
+                  0.92000000000000004,
+                  0.23000000000000001,
+                  1,
+               ],
+            },
+            {
+               metallic: 1,
+            },
+            {
+               roughness: 0.14280000000000001,
+            },
+            {
+               opacity: null,
+            },
+         ],
+         source: "build/sceneform_sdk/default_materials/obj_material.sfm",
+      },
+      {
          name: "mat20.002",
          parameters: [
             {
@@ -24,33 +50,7 @@
                opacity: null,
             },
          ],
-         source: "build/sceneform_sdk/default_materials/obj_material.rcm",
-      },
-      {
-         name: "mat5.002",
-         parameters: [
-            {
-               baseColor: null,
-            },
-            {
-               baseColorTint: [
-                  0.01,
-                  0.60999999999999999,
-                  0.90000000000000002,
-                  1,
-               ],
-            },
-            {
-               metallic: 1,
-            },
-            {
-               roughness: 0.14280000000000001,
-            },
-            {
-               opacity: null,
-            },
-         ],
-         source: "build/sceneform_sdk/default_materials/obj_material.rcm",
+         source: "build/sceneform_sdk/default_materials/obj_material.sfm",
       },
       {
          name: "mat4.002",
@@ -76,19 +76,19 @@
                opacity: null,
             },
          ],
-         source: "build/sceneform_sdk/default_materials/obj_material.rcm",
+         source: "build/sceneform_sdk/default_materials/obj_material.sfm",
       },
       {
-         name: "mat12.002",
+         name: "mat5.002",
          parameters: [
             {
                baseColor: null,
             },
             {
                baseColorTint: [
-                  1,
-                  0.92000000000000004,
-                  0.23000000000000001,
+                  0.01,
+                  0.60999999999999999,
+                  0.90000000000000002,
                   1,
                ],
             },
@@ -102,7 +102,7 @@
                opacity: null,
             },
          ],
-         source: "build/sceneform_sdk/default_materials/obj_material.rcm",
+         source: "build/sceneform_sdk/default_materials/obj_material.sfm",
       },
    ],
    model: {
