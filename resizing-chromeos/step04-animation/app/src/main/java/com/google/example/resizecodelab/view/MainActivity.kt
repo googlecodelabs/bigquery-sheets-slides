@@ -21,20 +21,16 @@ import android.os.Bundle
 import android.support.constraint.ConstraintsChangedListener
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
-import android.widget.Toast
 import com.google.example.resizecodelab.R
 import com.google.example.resizecodelab.model.AppData
 import com.google.example.resizecodelab.model.Suggestion
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.transition.*
+import android.view.View
 import android.view.View.*
-import kotlinx.android.synthetic.main.activity_main_shell.*
 import android.view.animation.AnticipateOvershootInterpolator
-
-
+import android.view.ViewGroup
 
 
 class MainActivity : AppCompatActivity() {
@@ -57,14 +53,12 @@ class MainActivity : AppCompatActivity() {
         constraintMain.setOnConstraintsChanged(object : ConstraintsChangedListener() {
 
             override fun preLayoutChange(state: Int, layoutId: Int) {
-//                Log.d("ROTATION", "Pre: New State! : " + state + "/" + layoutId)
-
                 //Layout files are no longer replaced so we manually propogate changes
                 progressLoadingReviews.visibility = if (viewModel.appData.value == null) VISIBLE else INVISIBLE
 
                 val changeBounds = ChangeBounds()
-                changeBounds.duration = 500
-                //changeBounds.interpolator = AnticipateOvershootInterpolator(1f)
+                changeBounds.duration = 600
+                changeBounds.interpolator = AnticipateOvershootInterpolator(0.2f)
 
                 TransitionManager.beginDelayedTransition(constraintMain, changeBounds)
 
@@ -85,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                         recyclerSuggested.layoutManager = suggestionLayoutManager
                     }
 
-                    R.layout.activity_main_w600 -> {
+                    R.layout.activity_main_w400 -> {
                         val reviewLayoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
                         recyclerReviews.layoutManager = reviewLayoutManager
 
@@ -93,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                         recyclerSuggested.layoutManager = suggestionLayoutManager
                     }
 
-                    R.layout.activity_main_w800_land -> {
+                    R.layout.activity_main_w600_land -> {
                         val reviewLayoutManager = GridLayoutManager(baseContext, 2)
                         recyclerReviews.layoutManager = reviewLayoutManager
 
@@ -102,6 +96,12 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+
+            override fun postLayoutChange(stateId: Int, layoutId: Int) {
+                //Request all layout elements be redrawn
+                constraintMain.requestLayout()
+            }
+
         })
 
         //Retrieve the ViewModel with state data
@@ -146,28 +146,27 @@ class MainActivity : AppCompatActivity() {
             textProductDescription.text = getDescriptionText(viewModel.appData.value)
         })
 
-        //Force configuration update
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
-            constraintMain.setState(R.id.constraintStateLandscape, resources.configuration.screenWidthDp, resources.configuration.screenHeightDp)
-        else
-            constraintMain.setState(R.id.constraintStatePortrait, resources.configuration.screenWidthDp, resources.configuration.screenHeightDp)
+        //On first load, make sure we are showing the correct layout
+        configurationUpdate(resources.configuration)
     }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
-            constraintMain.setState(R.id.constraintStateLandscape, newConfig.screenWidthDp, newConfig.screenHeightDp)
-        else
-            constraintMain.setState(R.id.constraintStatePortrait, newConfig.screenWidthDp, newConfig.screenHeightDp)
-
-//        Log.d("ROTATION", "Orientation: " + resources.configuration.orientation)
-  }
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putBoolean(KEY_EXPANDED, viewModel.isDescriptionExpanded.value == true)
         outState?.putString(KEY_PRODUCT_NAME, viewModel.productName.value)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        configurationUpdate(newConfig)
+    }
+
+    private fun configurationUpdate(configuration: Configuration) {
+        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+            constraintMain.setState(R.id.constraintStateLandscape, configuration.screenWidthDp, configuration.screenHeightDp)
+        else
+            constraintMain.setState(R.id.constraintStatePortrait, configuration.screenWidthDp, configuration.screenHeightDp)
     }
 
     private fun handleReviewsUpdate(appData: AppData?) {

@@ -31,6 +31,13 @@
         app:layout_constraintGuide_percent="0.4" />
 
     <android.support.constraint.Guideline
+        android:id="@+id/guidelineImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <android.support.constraint.Guideline
         android:id="@+id/guidelineSplit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,8 +59,6 @@
         android:layout_marginTop="16dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/access_product_image"
-        android:maxHeight="128dp"
-        android:maxWidth="128dp"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="@id/guidelineRight"
         app:layout_constraintStart_toStartOf="parent"

@@ -72,7 +72,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:text="@string/label_product_name"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         app:layout_constraintEnd_toStartOf="@+id/progressLoadingReviews"
         app:layout_constraintStart_toEndOf="@+id/imageProduct"
         app:layout_constraintTop_toTopOf="parent"
@@ -84,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:text="@string/label_product_company"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintEnd_toStartOf="@+id/progressLoadingReviews"
         app:layout_constraintStart_toEndOf="@+id/imageProduct"
@@ -119,9 +120,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageProduct"
-        app:layout_constraintTop_toBottomOf="@id/barrierHorizontal"
+        app:layout_constraintStart_toStartOf="@+id/textProductName"
+        app:layout_constraintTop_toBottomOf="@id/buttonPurchase"
         tools:text="@tools:sample/lorem/random" />
 
     <Button
@@ -129,6 +131,7 @@
         style="@style/Widget.AppCompat.ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:padding="16dp"
         android:text="@string/button_expand"
         android:textAllCaps="true"
@@ -141,49 +144,46 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:layout_constraintBottom_toBottomOf="@+id/imageProduct"
-        app:constraint_referenced_ids="buttonPurchase,imageProduct"
-        tools:layout_editor_absoluteY="16dp" />
+        app:constraint_referenced_ids="buttonExpand,imageProduct"
+         />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerReviews"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:layoutManager="android.support.v7.widget.GridLayoutManager"
-        app:spanCount="2"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonExpand"
+        app:layout_constraintStart_toStartOf="@id/guidelineRight"
+        app:layout_constraintTop_toBottomOf="@+id/barrierHorizontal"
         tools:listitem="@layout/list_item_review" />
 
     <TextView
         android:id="@+id/textSuggested"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/label_suggested"
         android:textAlignment="viewStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerReviews"
-        tools:text="@string/label_suggested" />
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/guidelineSuggested"
+        app:layout_constraintTop_toBottomOf="@+id/barrierHorizontal"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerSuggested"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:spanCount="2"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textSuggested"
-        android:orientation="horizontal"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listitem="@layout/list_item_suggested" />
-
 
 </android.support.constraint.ConstraintLayout>
