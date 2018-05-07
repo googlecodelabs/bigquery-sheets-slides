@@ -1,0 +1,34 @@
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<resources>
+    <string name="app_name">Resize Codelab</string>
+    <string name="label_product_name">Whizzbuckling Whipplebot</string>
+    <string name="label_product_name2">Gregarious Grogglestock</string>
+    <string name="label_product_name3">Byzantium Barnacles</string>
+    <string name="label_product_name4">Cratankerous Cribblewelps</string>
+    <string name="label_product_name5">Sunsaritous</string>
+    <string name="label_product_name6">Squiggalia Scrumptiae</string>
+    <string name="label_product_name7">Tenachaterous Torna</string>
+    <string name="label_product_name8">Venemial Venorae</string>
+    <string name="label_product_company">Ostentatious Objects Inc.</string>
+    <string name="label_product_company2">Formal Friperies Gmbh.</string>
+    <string name="label_suggested">You may also like&#8230;</string>
+    <string name="button_purchase">Purchase</string>
+    <string name="button_expand">Expand</string>
+    <string name="button_collapse">Collapse</string>
+    <string name="access_product_image">Product Image</string>
+    <string name="popup_purchase">You are now the proud owner of a Whizzbuckling Whipplebot</string>
+</resources>
