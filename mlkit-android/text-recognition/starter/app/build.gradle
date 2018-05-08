@@ -3,8 +3,8 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.google.firebase.codelab.mlkit_custommodel"
-        minSdkVersion 19
+        applicationId "com.google.firebase.codelab.mlkit"
+        minSdkVersion 15
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -15,9 +15,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    aaptOptions {
-        noCompress "tflite"
     }
 }
 
@@ -30,6 +27,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation 'com.google.firebase:firebase-core:15.0.1'
-    implementation 'com.google.firebase:firebase-ml-model-interpreter:15.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision:15.0.0'
 }
 apply plugin: 'com.google.gms.google-services'
