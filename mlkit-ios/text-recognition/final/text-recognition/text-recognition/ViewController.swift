@@ -36,18 +36,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     ImageDisplay(file: "do-not-feed-birds", name: "Image 1"),
     ImageDisplay(file: "walk-on-grass", name: "Image 2"),
   ]
-  
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-     let vision = Vision.vision()
-     textDetector = vision.textDetector()
-     cloudTextDetector = vision.cloudDocumentTextDetector()
-  }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    
+    let vision = Vision.vision()
+    textDetector = vision.textDetector()
+    cloudTextDetector = vision.cloudDocumentTextDetector()
     imageView.layer.addSublayer(frameSublayer)
     pickerView.dataSource = self
     pickerView.delegate = self
