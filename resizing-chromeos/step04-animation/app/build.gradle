@@ -22,7 +22,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId 'com.google.example.resizecodelab'
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"

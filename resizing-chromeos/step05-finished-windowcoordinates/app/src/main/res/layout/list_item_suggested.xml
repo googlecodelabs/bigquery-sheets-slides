@@ -17,8 +17,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:maxWidth="150dp"
     android:layout_margin="16dp"
     android:background="#05000000">
 
@@ -31,8 +32,8 @@
         android:layout_marginTop="16dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/access_product_image"
-        android:maxHeight="120dp"
-        android:maxWidth="120dp"
+        android:maxHeight="150dp"
+        android:maxWidth="150dp"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,11 +42,10 @@
 
     <TextView
         android:id="@+id/textSuggestedProductName"
-        android:layout_width="0dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
-        android:maxWidth="100dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageSuggestedProduct"

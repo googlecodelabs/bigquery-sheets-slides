@@ -36,6 +36,20 @@
             app:layout_constraintGuide_percent="0.4" />
 
         <android.support.constraint.Guideline
+            android:id="@+id/guidelineImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guidelineSplit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.45" />
+
+        <android.support.constraint.Guideline
             android:id="@+id/guidelineSuggested"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -175,7 +189,7 @@
             android:orientation="vertical"
             app:layoutManager="android.support.v7.widget.GridLayoutManager"
             app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-            app:layout_constraintStart_toStartOf="@+id/guidelineSuggested"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textSuggested"
             app:spanCount="2"
             tools:listitem="@layout/list_item_suggested" />
