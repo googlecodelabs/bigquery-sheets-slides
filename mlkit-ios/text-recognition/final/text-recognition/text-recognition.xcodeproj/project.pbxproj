@@ -383,7 +383,7 @@
 				DEVELOPMENT_TEAM = EQHXZ8M8AV;
 				INFOPLIST_FILE = "text-recognition/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.google.firebaseml.sampleapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.firebase.codelab.mlkit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "dac40987-e637-434d-9b81-63d373eb4caa";
 				PROVISIONING_PROFILE_SPECIFIER = "Google Development";
@@ -401,7 +401,7 @@
 				DEVELOPMENT_TEAM = EQHXZ8M8AV;
 				INFOPLIST_FILE = "text-recognition/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.google.firebaseml.sampleapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.firebase.codelab.mlkit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "dac40987-e637-434d-9b81-63d373eb4caa";
 				PROVISIONING_PROFILE_SPECIFIER = "Google Development";

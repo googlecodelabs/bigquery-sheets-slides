@@ -39,12 +39,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-//    textDetector = Vision().textDetector()
-//    cloudTextDetector = Vision().cloudTextDetector()
      let vision = Vision.vision()
      textDetector = vision.textDetector()
      cloudTextDetector = vision.cloudDocumentTextDetector()
-    
   }
   
   override func viewDidLoad() {
