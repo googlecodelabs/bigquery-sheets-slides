@@ -29,6 +29,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.transition.*
 import android.view.View.*
 import android.view.animation.AnticipateOvershootInterpolator
+import com.google.example.resizecodelab.viewmodel.MainViewModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -194,8 +195,8 @@ class MainActivity : AppCompatActivity() {
                 Suggestion(getString(R.string.label_product_name8), R.drawable.venemial))
     }
 
-    private fun toggleExpandButton() {
-        //Invert isDescriptionExpanded
-        viewModel.setDescriptionExpanded(viewModel.isDescriptionExpanded.value == false)
-    }
+private fun toggleExpandButton() {
+    //Invert isDescriptionExpanded
+    viewModel.setDescriptionExpanded(viewModel.isDescriptionExpanded.value == false)
+}
 }

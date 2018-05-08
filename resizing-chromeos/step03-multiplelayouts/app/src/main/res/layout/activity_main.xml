@@ -145,6 +145,14 @@
             app:layout_constraintEnd_toEndOf="@+id/textProductDescription"
             app:layout_constraintTop_toBottomOf="@+id/textProductDescription" />
 
+        <android.support.constraint.Barrier
+            android:id="@+id/barrierHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="buttonExpand,imageProduct"
+            tools:layout_editor_absoluteY="16dp" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerReviews"
             android:layout_width="0dp"

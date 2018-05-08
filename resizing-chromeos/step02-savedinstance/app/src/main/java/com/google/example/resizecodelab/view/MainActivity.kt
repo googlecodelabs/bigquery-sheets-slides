@@ -23,6 +23,7 @@ import android.view.View.VISIBLE
 import com.google.example.resizecodelab.R
 import com.google.example.resizecodelab.model.AppData
 import com.google.example.resizecodelab.model.Suggestion
+import com.google.example.resizecodelab.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

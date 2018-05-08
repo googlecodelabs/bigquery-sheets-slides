@@ -141,7 +141,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:layout_constraintBottom_toBottomOf="@+id/imageProduct"
         app:constraint_referenced_ids="buttonPurchase,imageProduct"
         tools:layout_editor_absoluteY="16dp" />
 
