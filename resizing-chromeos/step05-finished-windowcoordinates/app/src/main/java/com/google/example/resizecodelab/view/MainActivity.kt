@@ -36,6 +36,7 @@ import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.FrameLayout
 import android.widget.PopupWindow
 import android.widget.TextView
+import com.google.example.resizecodelab.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main_shell.*
 
 
