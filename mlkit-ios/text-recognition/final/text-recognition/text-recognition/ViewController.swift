@@ -35,7 +35,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
   let images = [
     ImageDisplay(file: "do-not-feed-birds", name: "Image 1"),
     ImageDisplay(file: "walk-on-grass", name: "Image 2"),
-    ]
+  ]
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -57,8 +57,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     runCloudTextRecognition(with: imageView.image!)
   }
   
-  
-  
   // MARK: Text Recognition
   
   func runTextRecognition(with image: UIImage) {
@@ -71,57 +69,60 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
   func runCloudTextRecognition(with image: UIImage) {
     let visionImage = VisionImage(image: image)
     cloudTextDetector.detect(in: visionImage) { features, error in
+      if let error = error {
+        print("Received error: \(error)")
+        return
+      }
+      
       self.processCloudResult(from: features, error: error)
     }
   }
+
   
   // MARK: Image Drawing
   
   func processResult(from text: [VisionText]?, error: Error?) {
     removeFrames()
-    if let features = text, let image = imageView.image {
-      for text in features {
-        if let block = text as? VisionTextBlock {
-          for line in block.lines {
-            for element in line.elements {
-              self.addFrameView(
-                featureFrame: element.frame,
-                imageSize: image.size,
-                viewFrame: self.imageView.frame,
-                text: element.text
-              )
-            }
+    guard let features = text, let image = imageView.image else {
+      return
+    }
+    for text in features {
+      if let block = text as? VisionTextBlock {
+        for line in block.lines {
+          for element in line.elements {
+            self.addFrameView(
+              featureFrame: element.frame,
+              imageSize: image.size,
+              viewFrame: self.imageView.frame,
+              text: element.text
+            )
           }
         }
       }
     }
   }
+
   
   func processCloudResult(from text: VisionCloudText?, error: Error?) {
     removeFrames()
-    if let features = text, let image = imageView.image, let pages = features.pages {
-      for page in pages {
-        if let blocks = page.blocks {
-          for block in blocks {
-            if let paragraphs = block.paragraphs {
-              for paragraph in paragraphs {
-                if let words = paragraph.words {
-                  for word in words {
-                    self.addFrameView(
-                      featureFrame: word.frame,
-                      imageSize: image.size,
-                      viewFrame: self.imageView.frame
-                    )
-                  }
-                }
-              }
-            }
+    guard let features = text, let image = imageView.image, let pages = features.pages else {
+      return
+    }
+    for page in pages {
+      for block in page.blocks ?? []  {
+        for paragraph in block.paragraphs ?? [] {
+          for word in paragraph.words ?? [] {
+            self.addFrameView(
+              featureFrame: word.frame,
+              imageSize: image.size,
+              viewFrame: self.imageView.frame
+            )
           }
         }
-        
       }
     }
   }
+
   
   /// Converts a feature frame to a frame UIView that is displayed over the image.
   ///
@@ -184,10 +185,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
       textLayer.string = text
       textLayer.fontSize = 12.0
       textLayer.foregroundColor = Constants.lineColor
-      let center = CGPoint(x: rect.midX, y: rect.midX)
+      let center = CGPoint(x: rect.midX, y: rect.midY)
       textLayer.position = center
-      textLayer.isHidden = false
-      textLayer.alignmentMode = kCAAlignmentLeft
+      textLayer.frame = rect
+      textLayer.alignmentMode = kCAAlignmentCenter
       textLayer.contentsScale = UIScreen.main.scale
       frameSublayer.addSublayer(textLayer)
     }
