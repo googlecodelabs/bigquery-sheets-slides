@@ -13,7 +13,7 @@
 		BB70D4E3209CF98500743DA7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB70D4E1209CF98500743DA7 /* Main.storyboard */; };
 		BB70D4E5209CF98500743DA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB70D4E4209CF98500743DA7 /* Assets.xcassets */; };
 		BB70D4E8209CF98500743DA7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB70D4E6209CF98500743DA7 /* LaunchScreen.storyboard */; };
-		BBAAAE9920A210F500FA85D0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBAAAE9820A210F500FA85D0 /* GoogleService-Info.plist */; };
+		BBAAAE9F20A239F400FA85D0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBAAAE9E20A239F400FA85D0 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 		BB70D4E4209CF98500743DA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BB70D4E7209CF98500743DA7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BB70D4E9209CF98500743DA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BBAAAE9820A210F500FA85D0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BBAAAE9E20A239F400FA85D0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +84,7 @@
 				BB70D4DF209CF98500743DA7 /* ViewController.swift */,
 				BB70D4F1209D000A00743DA7 /* Supporting Files */,
 				BB70D4E9209CF98500743DA7 /* Info.plist */,
-				BBAAAE9820A210F500FA85D0 /* GoogleService-Info.plist */,
+				BBAAAE9E20A239F400FA85D0 /* GoogleService-Info.plist */,
 			);
 			path = "text-recognition";
 			sourceTree = "<group>";
@@ -162,7 +162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB70D4E8209CF98500743DA7 /* LaunchScreen.storyboard in Resources */,
-				BBAAAE9920A210F500FA85D0 /* GoogleService-Info.plist in Resources */,
+				BBAAAE9F20A239F400FA85D0 /* GoogleService-Info.plist in Resources */,
 				BB70D4E5209CF98500743DA7 /* Assets.xcassets in Resources */,
 				BB70D4E3209CF98500743DA7 /* Main.storyboard in Resources */,
 			);
@@ -383,7 +383,7 @@
 				DEVELOPMENT_TEAM = EQHXZ8M8AV;
 				INFOPLIST_FILE = "text-recognition/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.google.firebase.codelab.mlkit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.firebaseml.sampleapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "dac40987-e637-434d-9b81-63d373eb4caa";
 				PROVISIONING_PROFILE_SPECIFIER = "Google Development";
@@ -401,7 +401,7 @@
 				DEVELOPMENT_TEAM = EQHXZ8M8AV;
 				INFOPLIST_FILE = "text-recognition/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.google.firebase.codelab.mlkit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.firebaseml.sampleapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "dac40987-e637-434d-9b81-63d373eb4caa";
 				PROVISIONING_PROFILE_SPECIFIER = "Google Development";

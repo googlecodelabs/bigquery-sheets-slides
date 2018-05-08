@@ -25,7 +25,7 @@ struct ImageDisplay {
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
   
   var textDetector: VisionTextDetector!
-  var cloudTextDetector: VisionCloudTextDetector!
+  var cloudTextDetector: VisionCloudDocumentTextDetector!
   
   var frameSublayer = CALayer()
   
@@ -37,10 +37,19 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     ImageDisplay(file: "walk-on-grass", name: "Image 2"),
   ]
   
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+//    textDetector = Vision().textDetector()
+//    cloudTextDetector = Vision().cloudTextDetector()
+     let vision = Vision.vision()
+     textDetector = vision.textDetector()
+     cloudTextDetector = vision.cloudDocumentTextDetector()
+    
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    textDetector = Vision().textDetector()
-    cloudTextDetector = Vision().cloudTextDetector()
+    
     
     imageView.layer.addSublayer(frameSublayer)
     pickerView.dataSource = self
@@ -112,10 +121,17 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
       for block in page.blocks ?? []  {
         for paragraph in block.paragraphs ?? [] {
           for word in paragraph.words ?? [] {
+            var wordText = ""
+            for symbol in word.symbols ?? [] {
+              if let text = symbol.text {
+                wordText = wordText + text
+              }
+            }
             self.addFrameView(
               featureFrame: word.frame,
               imageSize: image.size,
-              viewFrame: self.imageView.frame
+              viewFrame: self.imageView.frame,
+              text: wordText
             )
           }
         }
