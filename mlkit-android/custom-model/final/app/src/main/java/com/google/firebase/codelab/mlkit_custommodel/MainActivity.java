@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.common.FirebaseMLException;
 import com.google.firebase.ml.custom.FirebaseModelDataType;
@@ -42,6 +44,7 @@ import com.google.firebase.ml.custom.FirebaseModelManager;
 import com.google.firebase.ml.custom.FirebaseModelOptions;
 import com.google.firebase.ml.custom.FirebaseModelOutputs;
 import com.google.firebase.ml.custom.model.FirebaseCloudModelSource;
+import com.google.firebase.ml.custom.model.FirebaseLocalModelSource;
 import com.google.firebase.ml.custom.model.FirebaseModelDownloadConditions;
 
 import java.io.BufferedReader;
@@ -68,13 +71,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Integer mImageMaxWidth;
     // Max height (portrait mode)
     private Integer mImageMaxHeight;
-    private boolean mIsLandScape;
     private final String[] mFilePaths =
             new String[]{"mountain.jpg", "tennis.jpg"};
     /**
      * Name of the model file hosted with Firebase.
      */
     private static final String HOSTED_MODEL_NAME = "mobilenet_v1_224_quant";
+    private static final String LOCAL_MODEL_ASSET = "mobilenet_v1.0_224_quant.tflite";
     /**
      * Name of the label file stored in Assets.
      */
@@ -144,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         int[] inputDims = {DIM_BATCH_SIZE, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, DIM_PIXEL_SIZE};
-        int[] outputDims = {1, mLabelList.size()};
+        int[] outputDims = {DIM_BATCH_SIZE, mLabelList.size()};
         try {
             mDataOptions =
                     new FirebaseModelInputOutputOptions.Builder()
@@ -155,6 +158,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     .Builder()
                     .requireWifi()
                     .build();
+            FirebaseLocalModelSource localModelSource =
+                    new FirebaseLocalModelSource.Builder("asset")
+                            .setAssetFilePath(LOCAL_MODEL_ASSET).build();
 
             FirebaseCloudModelSource cloudSource = new FirebaseCloudModelSource.Builder
                     (HOSTED_MODEL_NAME)
@@ -165,10 +171,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     // for updates
                     .build();
             FirebaseModelManager manager = FirebaseModelManager.getInstance();
+            manager.registerLocalModelSource(localModelSource);
             manager.registerCloudModelSource(cloudSource);
             FirebaseModelOptions modelOptions =
                     new FirebaseModelOptions.Builder()
                             .setCloudModelName(HOSTED_MODEL_NAME)
+                            .setLocalModelName("asset")
                             .build();
             mInterpreter = FirebaseModelInterpreter.getInstance(modelOptions);
         } catch (FirebaseMLException e) {
@@ -191,6 +199,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             // Here's where the magic happens!!
             mInterpreter
                     .run(inputs, mDataOptions)
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            e.printStackTrace();
+                            showToast("Error running model inference");
+                        }
+                    })
                     .continueWith(
                             new Continuation<FirebaseModelOutputs, List<String>>() {
                                 @Override
@@ -337,15 +352,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Integer getImageMaxWidth() {
         if (mImageMaxWidth == null) {
             // Calculate the max width in portrait mode. This is done lazily since we need to
-            // wait for
-            // a UI layout pass to get the right values. So delay it to first time image
+            // wait for a UI layout pass to get the right values. So delay it to first time image
             // rendering time.
-            if (mIsLandScape) {
-                mImageMaxWidth =
-                        mImageView.getHeight();
-            } else {
-                mImageMaxWidth = mImageView.getWidth();
-            }
+            mImageMaxWidth = mImageView.getWidth();
         }
 
         return mImageMaxWidth;
@@ -356,15 +365,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Integer getImageMaxHeight() {
         if (mImageMaxHeight == null) {
             // Calculate the max width in portrait mode. This is done lazily since we need to
-            // wait for
-            // a UI layout pass to get the right values. So delay it to first time image
+            // wait for a UI layout pass to get the right values. So delay it to first time image
             // rendering time.
-            if (mIsLandScape) {
-                mImageMaxHeight = mImageView.getWidth();
-            } else {
-                mImageMaxHeight =
-                        mImageView.getHeight();
-            }
+            mImageMaxHeight =
+                    mImageView.getHeight();
         }
 
         return mImageMaxHeight;
@@ -376,8 +380,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         int targetHeight;
         int maxWidthForPortraitMode = getImageMaxWidth();
         int maxHeightForPortraitMode = getImageMaxHeight();
-        targetWidth = mIsLandScape ? maxHeightForPortraitMode : maxWidthForPortraitMode;
-        targetHeight = mIsLandScape ? maxWidthForPortraitMode : maxHeightForPortraitMode;
+        targetWidth = maxWidthForPortraitMode;
+        targetHeight = maxHeightForPortraitMode;
         return new Pair<>(targetWidth, targetHeight);
     }
 }
