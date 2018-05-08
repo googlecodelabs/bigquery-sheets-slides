@@ -35,7 +35,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
 }
 
 dependencies {
@@ -44,29 +43,29 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:design:27.1.1'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-
-    implementation 'com.google.ar.sceneform:core:0.4.0'
-    implementation "com.google.ar.sceneform.ux:sceneform-ux:0.4.0"
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.0.0"
 }
 
 apply plugin: 'com.google.ar.sceneform.plugin'
 
-
-
-sceneform.asset('sampledata/models/House.obj',
+sceneform.asset('sampledata/models/andy.obj',
         'default',
-        'sampledata/models/House.rca',
-        'src/main/assets/House')
+        'sampledata/models/andy.sfa',
+        'src/main/assets/andy')
 
 sceneform.asset('sampledata/models/Cabin.obj',
         'default',
-        'sampledata/models/Cabin.rca',
+        'sampledata/models/Cabin.sfa',
         'src/main/assets/Cabin')
 
+sceneform.asset('sampledata/models/House.obj',
+        'default',
+        'sampledata/models/House.sfa',
+        'src/main/assets/House')
 
 sceneform.asset('sampledata/models/igloo.obj',
         'default',
-        'sampledata/models/igloo.rca',
+        'sampledata/models/igloo.sfa',
         'src/main/assets/igloo')

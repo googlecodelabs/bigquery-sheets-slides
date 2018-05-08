@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>959916140374-m77p0u9uo2tq8a8p70mng326ijrluhb6.apps.googleusercontent.com</string>
+	<string>83487835625-ug0l17p5f6huffrd0qttf9dtotd91gkk.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.959916140374-m77p0u9uo2tq8a8p70mng326ijrluhb6</string>
+	<string>com.googleusercontent.apps.83487835625-ug0l17p5f6huffrd0qttf9dtotd91gkk</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAOJFq8_p89x7kx2EeL7EUd3pB2SiscXJk</string>
+	<string>AIzaSyBlRcXZE9wvqpV0jxnVd7MbdAES31TlV7s</string>
 	<key>GCM_SENDER_ID</key>
-	<string>959916140374</string>
+	<string>83487835625</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.google.firebase.codelab.mlkit</string>
 	<key>PROJECT_ID</key>
-	<string>ml-kit-ios-codelab</string>
+	<string>ml-kit-day</string>
 	<key>STORAGE_BUCKET</key>
-	<string>ml-kit-ios-codelab.appspot.com</string>
+	<string>ml-kit-day.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:959916140374:ios:693c00b96c712e8c</string>
+	<string>1:83487835625:ios:693c00b96c712e8c</string>
 	<key>DATABASE_URL</key>
-	<string>https://ml-kit-ios-codelab.firebaseio.com</string>
+	<string>https://ml-kit-day.firebaseio.com</string>
 </dict>
 </plist>

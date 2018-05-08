@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Integer mImageMaxWidth;
     // Max height (portrait mode)
     private Integer mImageMaxHeight;
-    private boolean mIsLandScape;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +82,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
         Spinner dropdown = findViewById(R.id.spinner);
         String[] items = new String[]{"Image 1", "Image 2", "Image 3"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout
+                .simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
         dropdown.setOnItemSelectedListener(this);
     }
@@ -180,7 +180,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     FirebaseVisionCloudText.Paragraph paragraph = paragraphs.get(k);
                     List<FirebaseVisionCloudText.Word> words = paragraph.getWords();
                     for (int l = 0; l < words.size(); l++) {
-                        Graphic cloudTextGraphic = new CloudTextGraphic(mGraphicOverlay, words.get(l));
+                        Graphic cloudTextGraphic = new CloudTextGraphic(mGraphicOverlay, words
+                                .get(l));
                         mGraphicOverlay.add(cloudTextGraphic);
                     }
                 }
@@ -198,14 +199,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // landscape mode.
     private Integer getImageMaxWidth() {
         if (mImageMaxWidth == null) {
-            // Calculate the max width in portrait mode. This is done lazily since we need to wait for
-            // a UI layout pass to get the right values. So delay it to first time image rendering time.
-            if (mIsLandScape) {
-                mImageMaxWidth =
-                        mImageView.getHeight();
-            } else {
-                mImageMaxWidth = mImageView.getWidth();
-            }
+            // Calculate the max width in portrait mode. This is done lazily since we need to
+            // wait for
+            // a UI layout pass to get the right values. So delay it to first time image
+            // rendering time.
+            mImageMaxWidth = mImageView.getWidth();
         }
 
         return mImageMaxWidth;
@@ -215,14 +213,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // landscape mode.
     private Integer getImageMaxHeight() {
         if (mImageMaxHeight == null) {
-            // Calculate the max width in portrait mode. This is done lazily since we need to wait for
-            // a UI layout pass to get the right values. So delay it to first time image rendering time.
-            if (mIsLandScape) {
-                mImageMaxHeight = mImageView.getWidth();
-            } else {
-                mImageMaxHeight =
-                        mImageView.getHeight();
-            }
+            // Calculate the max width in portrait mode. This is done lazily since we need to
+            // wait for
+            // a UI layout pass to get the right values. So delay it to first time image
+            // rendering time.
+            mImageMaxHeight =
+                    mImageView.getHeight();
         }
 
         return mImageMaxHeight;
@@ -234,8 +230,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         int targetHeight;
         int maxWidthForPortraitMode = getImageMaxWidth();
         int maxHeightForPortraitMode = getImageMaxHeight();
-        targetWidth = mIsLandScape ? maxHeightForPortraitMode : maxWidthForPortraitMode;
-        targetHeight = mIsLandScape ? maxWidthForPortraitMode : maxHeightForPortraitMode;
+        targetWidth = maxWidthForPortraitMode;
+        targetHeight = maxHeightForPortraitMode;
         return new Pair<>(targetWidth, targetHeight);
     }
 
