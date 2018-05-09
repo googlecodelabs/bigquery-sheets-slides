@@ -64,7 +64,7 @@ public class MySliceProvider extends SliceProvider {
                 "Decrease temperature");
 
         // Construct our parent builder
-        ListBuilder listBuilder = new ListBuilder(context, sliceUri);
+        ListBuilder listBuilder = new ListBuilder(context, sliceUri, ListBuilder.INFINITY);
 
         // Construct the builder for the row
         ListBuilder.RowBuilder temperatureRow = new ListBuilder.RowBuilder(listBuilder);
@@ -81,7 +81,7 @@ public class MySliceProvider extends SliceProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), sliceUri.hashCode(),
                 intent, 0);
         SliceAction openTempActivity = new SliceAction(pendingIntent,
-                IconCompat.createWithResource(context, R.drawable.ic_home).toIcon(),
+                IconCompat.createWithResource(context, R.drawable.ic_home),
                 "Temperature controls");
         temperatureRow.setPrimaryAction(openTempActivity);
 
