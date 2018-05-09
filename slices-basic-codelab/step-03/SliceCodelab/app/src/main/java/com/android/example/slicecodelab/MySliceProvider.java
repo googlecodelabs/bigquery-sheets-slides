@@ -57,10 +57,10 @@ public class MySliceProvider extends SliceProvider {
     private Slice createTemperatureSlice(Uri sliceUri) {
         // Define the actions used in this slice
         SliceAction tempUp = new SliceAction(getChangeTempIntent(sTemperature + 1),
-                IconCompat.createWithResource(context, R.drawable.ic_temp_up).toIcon(),
+                IconCompat.createWithResource(context, R.drawable.ic_temp_up),
                 "Increase temperature");
         SliceAction tempDown = new SliceAction(getChangeTempIntent(sTemperature - 1),
-                IconCompat.createWithResource(context, R.drawable.ic_temp_down).toIcon(),
+                IconCompat.createWithResource(context, R.drawable.ic_temp_down),
                 "Decrease temperature");
 
         // Construct our parent builder
