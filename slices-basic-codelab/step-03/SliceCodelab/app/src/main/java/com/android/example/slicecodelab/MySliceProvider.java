@@ -27,17 +27,20 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.graphics.drawable.IconCompat;
 
+import androidx.core.graphics.drawable.IconCompat;
 import androidx.slice.Slice;
 import androidx.slice.SliceProvider;
 import androidx.slice.builders.ListBuilder;
 import androidx.slice.builders.SliceAction;
 
 public class MySliceProvider extends SliceProvider {
+    private Context context;
+    private static int sReqCode = 0;
 
     @Override
     public boolean onCreateSliceProvider() {
+        context = getContext();
         return true;
     }
 
@@ -54,20 +57,20 @@ public class MySliceProvider extends SliceProvider {
     private Slice createTemperatureSlice(Uri sliceUri) {
         // Define the actions used in this slice
         SliceAction tempUp = new SliceAction(getChangeTempIntent(sTemperature + 1),
-                IconCompat.createWithResource(getContext(), R.drawable.ic_temp_up).toIcon(),
+                IconCompat.createWithResource(context, R.drawable.ic_temp_up).toIcon(),
                 "Increase temperature");
         SliceAction tempDown = new SliceAction(getChangeTempIntent(sTemperature - 1),
-                IconCompat.createWithResource(getContext(), R.drawable.ic_temp_down).toIcon(),
+                IconCompat.createWithResource(context, R.drawable.ic_temp_down).toIcon(),
                 "Decrease temperature");
 
         // Construct our parent builder
-        ListBuilder listBuilder = new ListBuilder(getContext(), sliceUri);
+        ListBuilder listBuilder = new ListBuilder(context, sliceUri);
 
         // Construct the builder for the row
         ListBuilder.RowBuilder temperatureRow = new ListBuilder.RowBuilder(listBuilder);
 
         // Set title
-        temperatureRow.setTitle(getTemperatureString(getContext()));
+        temperatureRow.setTitle(getTemperatureString(context));
 
         // Add the actions to appear at the end of the row
         temperatureRow.addEndItem(tempDown);
@@ -78,7 +81,7 @@ public class MySliceProvider extends SliceProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), sliceUri.hashCode(),
                 intent, 0);
         SliceAction openTempActivity = new SliceAction(pendingIntent,
-                IconCompat.createWithResource(getContext(), R.drawable.ic_home).toIcon(),
+                IconCompat.createWithResource(context, R.drawable.ic_home).toIcon(),
                 "Temperature controls");
         temperatureRow.setPrimaryAction(openTempActivity);
 
@@ -91,10 +94,9 @@ public class MySliceProvider extends SliceProvider {
 
     private PendingIntent getChangeTempIntent(int value) {
         Intent intent = new Intent(ACTION_CHANGE_TEMP);
-        intent.setClass(getContext(), MyBroadcastReceiver.class);
+        intent.setClass(context, MyBroadcastReceiver.class);
         intent.putExtra(EXTRA_TEMP_VALUE, value);
-        int reqCode = value;
-        return PendingIntent.getBroadcast(getContext(), reqCode, intent,
+        return PendingIntent.getBroadcast(getContext(), sReqCode++, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

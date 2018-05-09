@@ -19,10 +19,12 @@ package com.android.example.slicecodelab;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.math.MathUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.math.MathUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTextView.setText(getTemperatureString(getApplicationContext()));
     }
 
-    public static String getTemperatureString(Context context) {
+    public static String getTemperatureString(@NonNull Context context) {
         return context.getString(R.string.temp_string, sTemperature);
     }
 

@@ -18,14 +18,15 @@ package com.android.example.slicecodelab;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.math.MathUtils;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.math.MathUtils;
+
 import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static int sTemperature = 16; // Celcius
+    public static int sTemperature = 16; // Celsius
     private TextView mTextView;
 
     @Override
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public static void updateTemperature(Context context, int newValue) {
         newValue = MathUtils.clamp(newValue, 10, 30); // Lets keep temperatures reasonable
-
         if (newValue != sTemperature) {
             sTemperature = newValue;
         }

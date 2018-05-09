@@ -28,9 +28,11 @@ import androidx.slice.SliceProvider;
 import androidx.slice.builders.ListBuilder;
 
 public class MySliceProvider extends SliceProvider {
+    private Context context;
 
     @Override
     public boolean onCreateSliceProvider() {
+        context = getContext();
         return true;
     }
 
@@ -46,13 +48,13 @@ public class MySliceProvider extends SliceProvider {
 
     private Slice createTemperatureSlice(Uri sliceUri) {
         // Construct our parent builder
-        ListBuilder listBuilder = new ListBuilder(getContext(), sliceUri);
+        ListBuilder listBuilder = new ListBuilder(context, sliceUri, ListBuilder.INFINITY);
 
         // Construct the builder for the row
         ListBuilder.RowBuilder temperatureRow = new ListBuilder.RowBuilder(listBuilder);
 
         // Set title
-        temperatureRow.setTitle(getTemperatureString(getContext()));
+        temperatureRow.setTitle(getTemperatureString(context));
 
         // TODO: add actions to row; in later step
 

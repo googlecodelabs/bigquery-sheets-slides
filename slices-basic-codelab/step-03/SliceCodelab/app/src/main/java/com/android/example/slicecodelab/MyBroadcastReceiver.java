@@ -22,8 +22,6 @@ import static com.android.example.slicecodelab.MainActivity.updateTemperature;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v4.math.MathUtils;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
 
