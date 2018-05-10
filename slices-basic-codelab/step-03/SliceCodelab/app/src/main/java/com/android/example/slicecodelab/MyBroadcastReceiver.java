@@ -16,9 +16,6 @@
 
 package com.android.example.slicecodelab;
 
-import static com.android.example.slicecodelab.MainActivity.sTemperature;
-import static com.android.example.slicecodelab.MainActivity.updateTemperature;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -33,8 +30,8 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (ACTION_CHANGE_TEMP.equals(action) && intent.getExtras() != null) {
-            int newValue = intent.getExtras().getInt(EXTRA_TEMP_VALUE, sTemperature);
-            updateTemperature(context, newValue);
+            int newValue = intent.getExtras().getInt(EXTRA_TEMP_VALUE, MainActivity.sTemperature);
+            MainActivity.updateTemperature(context, newValue);
         }
     }
 

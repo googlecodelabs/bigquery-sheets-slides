@@ -16,12 +16,6 @@
 
 package com.android.example.slicecodelab;
 
-
-import static com.android.example.slicecodelab.MainActivity.getTemperatureString;
-import static com.android.example.slicecodelab.MainActivity.sTemperature;
-import static com.android.example.slicecodelab.MyBroadcastReceiver.ACTION_CHANGE_TEMP;
-import static com.android.example.slicecodelab.MyBroadcastReceiver.EXTRA_TEMP_VALUE;
-
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -56,10 +50,10 @@ public class MySliceProvider extends SliceProvider {
 
     private Slice createTemperatureSlice(Uri sliceUri) {
         // Define the actions used in this slice
-        SliceAction tempUp = new SliceAction(getChangeTempIntent(sTemperature + 1),
+        SliceAction tempUp = new SliceAction(getChangeTempIntent(MainActivity.sTemperature + 1),
                 IconCompat.createWithResource(context, R.drawable.ic_temp_up),
                 "Increase temperature");
-        SliceAction tempDown = new SliceAction(getChangeTempIntent(sTemperature - 1),
+        SliceAction tempDown = new SliceAction(getChangeTempIntent(MainActivity.sTemperature - 1),
                 IconCompat.createWithResource(context, R.drawable.ic_temp_down),
                 "Decrease temperature");
 
@@ -70,7 +64,7 @@ public class MySliceProvider extends SliceProvider {
         ListBuilder.RowBuilder temperatureRow = new ListBuilder.RowBuilder(listBuilder);
 
         // Set title
-        temperatureRow.setTitle(getTemperatureString(context));
+        temperatureRow.setTitle(MainActivity.getTemperatureString(context));
 
         // Add the actions to appear at the end of the row
         temperatureRow.addEndItem(tempDown);
@@ -93,9 +87,9 @@ public class MySliceProvider extends SliceProvider {
     }
 
     private PendingIntent getChangeTempIntent(int value) {
-        Intent intent = new Intent(ACTION_CHANGE_TEMP);
+        Intent intent = new Intent(MyBroadcastReceiver.ACTION_CHANGE_TEMP);
         intent.setClass(context, MyBroadcastReceiver.class);
-        intent.putExtra(EXTRA_TEMP_VALUE, value);
+        intent.putExtra(MyBroadcastReceiver.EXTRA_TEMP_VALUE, value);
         return PendingIntent.getBroadcast(getContext(), sReqCode++, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }

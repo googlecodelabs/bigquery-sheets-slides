@@ -17,8 +17,6 @@
 package com.android.example.slicecodelab;
 
 
-import static com.android.example.slicecodelab.MainActivity.getTemperatureString;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
@@ -54,7 +52,7 @@ public class MySliceProvider extends SliceProvider {
         ListBuilder.RowBuilder temperatureRow = new ListBuilder.RowBuilder(listBuilder);
 
         // Set title
-        temperatureRow.setTitle(getTemperatureString(context));
+        temperatureRow.setTitle(MainActivity.getTemperatureString(context));
 
         // TODO: add actions to row; in later step
 
