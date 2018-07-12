@@ -84,8 +84,8 @@ function runQuery() {
     }
   }
 
-  // Skip header row 1 & start storing data in row 2, col 1; log URL
-  var START_ROW = 2;
+  // Start storing data in row 2, col 1
+  var START_ROW = 2;      // skip header row
   var START_COL = 1;
   sheet.getRange(START_ROW, START_COL, rows.length, headers.length).setValues(data);
 
