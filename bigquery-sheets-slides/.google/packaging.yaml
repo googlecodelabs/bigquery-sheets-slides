@@ -4,12 +4,11 @@
 # End users may safely ignore this file. It has no relevance to other systems.
 ---
 # Values: {DRAFT | PUBLISHED | INTERNAL | DEPRECATED | SUPERCEDED}
-status:       DRAFT
+status:       PUBLISHED
 
 # Optional, put additional explanation here for DEPRECATED or SUPERCEDED.
 # statusNote:
 
-# See http://go/sample-categories
 technologies: [Google Apps Script, Google BigQuery, Google Sheets, Google Slides, Google Apps, GCP, GSuite, ]
 categories:   [Getting Started, Automation, Big Data, Productivity]
 languages:    [JavaScript]
