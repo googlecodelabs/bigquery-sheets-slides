@@ -22,8 +22,8 @@ The codelab supported by this repository can be found at https://g.co/codelabs/b
 The sample app was inspired by other samples available from the [Google
 Developers](http://developers.google.com) team, combining and build on top of both of them:
 
-- [](appsscript.json): Apps Script application manifest
-- [](final/bq-sheets-slides.js): application code
+- `appsscript.json`: Apps Script application manifest
+- `final/bq-sheets-slides.js`: application code
 
 ## Support
 
