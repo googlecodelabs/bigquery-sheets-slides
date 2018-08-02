@@ -32,6 +32,11 @@ entire sample:
 - [`appsscript.json`](https://github.com/googlecodelabs/bigquery-sheets-slides/blob/master/appsscript.json): Apps Script application manifest
 - [`final/bq-sheets-slides.js`](https://github.com/googlecodelabs/bigquery-sheets-slides/blob/master/final/bq-sheets-slides.js): application code
 
+This application was also featured in this Google Cloud NEXT 2018 breakout session talk (although
+the demo was borked due to a permission problem): [G Suite + GCP: Building Serverless Applications
+with All of Google Cloud](https://cloud.withgoogle.com/next18/sf/sessions/session/156878). Here is
+[the video](http://youtu.be/mR1MLi-_biU) for that talk.
+
 ## Support
 
 - [BigQuery API support channels](https://cloud.google.com/bigquery/support)
