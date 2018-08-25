@@ -1,5 +1,10 @@
 # Code that Final Mile: Big Data Analysis to Slide Presentation
 
+This intermediate Google Apps Script codelab shows you how to build a sample app that demonstrates
+use of the Google BigQuery API to query a public data set and create a Google Slides presentation
+with the results data. A Google Sheet is used as an intermediary to store the analysis data as
+well as its ability to create charts on its data.
+
 ## Pre-requisites
 
 - Access to the internet and a web browser
@@ -7,11 +12,6 @@
 - Basic JavaScript skills
 
 ## Description
-
-This intermediate Google Apps Script codelab shows you how to build a sample app that demonstrates
-use of the Google BigQuery API to query a public data set and create a Google Slides presentation
-with the results data. A Google Sheet is used as an intermediary to store the analysis data as
-well as its ability to create charts on its data.
 
 BigQuery first performs a query on one of its public data sets; in this case, a query that
 determines the top 10 most common words in Shakespeare's works. BigQuery has a collection of
@@ -25,14 +25,18 @@ chart from the Sheet.
 This repo supports the developer codelab found at https://g.co/codelabs/bigquery-sheets-slides).
 Follow its step-by-step instructions and refer to the corresponding repo folder as necessary to
 see where your app should be at the end of each (major) step. The `final` subdirectory contains
-the completed, fully-working sample. The manifest file (see below) stays constant throughout the
-codelab and thus is stationed at the top-level of this repo. There are only 2 files for this
-entire sample:
+the completed, fully-working sample. When you run it, you should get a slide presentation that looks like this:
+
+![generated slide presentation](https://codelabs.developers.google.com/codelabs/bigquery-sheets-slides/img/bd9cafb69564190e.png "generated slide presentation")
+
+The manifest file (see below) stays constant throughout the codelab and thus
+is stationed at the top-level of this repo. There are 2 key files for this
+entire sample (while the rest are intermediary):
 
 - [`appsscript.json`](https://github.com/googlecodelabs/bigquery-sheets-slides/blob/master/appsscript.json): Apps Script application manifest
 - [`final/bq-sheets-slides.js`](https://github.com/googlecodelabs/bigquery-sheets-slides/blob/master/final/bq-sheets-slides.js): application code
 
-This application was also featured in this Google Cloud NEXT 2018 breakout session talk (although
+This application was also featured in a Google Cloud NEXT 2018 breakout session (although
 the demo was borked due to a permission problem): [G Suite + GCP: Building Serverless Applications
 with All of Google Cloud](https://cloud.withgoogle.com/next18/sf/sessions/session/156878). Here is
 [the video](http://youtu.be/mR1MLi-_biU) for that talk.
